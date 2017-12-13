@@ -1,0 +1,70 @@
+<style>
+.modal-backdrop {
+  z-index: -1;
+
+}
+
+.mhover:hover{
+  background: #337ab7;
+  border: thick solid #337ab7; 
+
+}
+</style>
+
+<div class="modal fade" id="itemeditModal{{item.pk}}" role="dialog">
+            <div class="modal-dialog">
+    
+            <!-- Modal content-->
+                <div class="modal-content" align="left">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Edit Item </h4>
+                         <!-- <p>{{order_item.id}}</p> -->
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="alert hidden" id="alert1" role="alert">
+                    </div>
+                    <p id="item_make"></p>
+                  
+                    <form action="{% url 'dashboard:edit_item' %}" method="post" class="special_edit" enctype="multipart/form-data" id="{{item.pk}}">
+                      {% csrf_token %}
+
+                              <div class="col-md-12 hidden">
+                                <label>ID</label>
+                                  <input type="text" id="id_item_id" maxlength="30" name="item_id" value="" required />
+                              </div>                            
+                               
+                              <div class="col-md-12">
+                                <label>Name</label>
+                                  <input type="text" id="id_item_name" maxlength="30" name="item_name" value="" required />
+                              </div>
+
+                              <div class="col-md-12">
+                                <label>Category</label>
+                                  <input type="text" id="id_item_category" maxlength="30" name="item_category" value="" readonly/>
+                              </div> 
+
+                              <div class="col-md-12">
+                                <label>Number</label>
+                                  <input type="text" id="id_item_num" maxlength="30" name="item_num" value="" readonly />
+                              </div>                           
+                           
+                              <div class="col-md-12">
+                                <label>Quantity</label>
+                                  <input id="id_item_quantity" maxlength="3" name="item_quantity"  type="number"  value="" required/>
+                              </div>                        
+
+                              <input style="margin-left: 180px !important; margin-top: 20px !important;" type="submit" name="edit" id="item_edit" class='btn mhover' value="Edit"/>
+                            <!-- </div> -->
+                            
+                    </form><br>
+                    
+                    
+                  </div>
+                    </div>
+                </div>
+      
+            </div>
+        </div>
+

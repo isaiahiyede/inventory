@@ -1,0 +1,11 @@
+<div class="col-md-12 hidden">
+    <form id="item_category_form" action="" method="POST">
+        {% csrf_token %}                            
+
+         <div class="col-md-12">
+            <input type="text" id="item_request_name" value="" name="item_request_name"/>
+         </div>
+
+         <input type="submit" name="submit" class="button" id="submit_btn" value="Send" />
+    </form>
+</div> 

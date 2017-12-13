@@ -1,0 +1,122 @@
+{% extends 'wfm_admin/adminPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+
+{% block page_header %}  
+  <h2 class="page-header"> Order No: #{% for order in order_items %}{{order.ordernumber}}{% endfor %} </h2>
+{% endblock page_header %}
+
+{% block action_panel %}
+    <div class="col-md-4" style="background:rgb(241,241,241);">
+
+      {% block search_panel %}
+      {% endblock %}
+
+      <!--<div class="col-md-6 sub">
+        <div class="select_outer two" style="z-index: 3;">
+          <select id="mounth" class="cus_select">
+            <option value="hide">Select Option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6 sub">
+        <div class="select_outer two" style="z-index: 3;">
+          <select id="mounth" class="cus_select">
+            <option value="hide">Select Option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+          </select>
+        </div>
+      </div>-->
+
+    {% block action_dropdown %}
+      <div class="col-md-9" style="padding: 5px; padding-left: 0px; margin:0px;">
+        <div class="select_outer two">
+          <select id="bulk_action_select_item" class="cus_select">
+            <option value="hide">Select Action</option>
+            <option value="approved">Approve</option>
+            <option value="delete">Delete</option> 
+
+          </select>
+        </div>
+      </div>
+      {% endblock %}
+      <div class="col-md-3" style="padding:5px; margin:0px;">
+        {% for order in order_items %}
+        <a class="btn btn-xs submit_items_action myhover" order_number_id="{{order.ordernumber}}" style="cursor:pointer !important;" id="submit_items_action">Go</a>
+        {% endfor %}
+        <br/><br/><br/>
+    </div>
+{% endblock %}
+
+
+{% block select_all_orders %}
+  <div class="row-fluid">
+    <div class="col-md-12" style="position:relative; left:-15px; margin-top:-30px;">  
+        <h4 style="position:relative; left:25px;"><input type="checkbox" style="position:relative; left:-8px;" id="select_all_orders">Select Multiple Items</h4>
+    </div>
+  </div>
+{% endblock select_all_orders %}
+
+
+
+{% block order_details %}
+    <table width="100%" border="0" id="order_items_table" class="table table-striped">
+          <tr>
+              <th>S/No </th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Number</th>
+              <th>Quantity</th>
+              <th>Actions</th>
+          </tr>
+    
+              {% for order in order_items %}
+              <input type="text" id="the_order_number" value="{{order.ordernumber}}" class="hidden">
+                {% for itm in order.requestitem_set.all %}
+          <tr>
+             <td>{% if not itm.status == "approved" %}<input type='checkbox' class="chk_box" name="order_item_pk" value="{{itm.pk}}" id="{{itm.pk}}" item_id="{{itm.status}}" item_num="{{itm.number}}" item_qty="{{itm.quantity}}"/>{% endif %} 
+                 {{ forloop.counter }} 
+              </td>
+              <td>{{ itm.name }}</td>
+              <td>{{ itm.category }}</td>
+              <td>{{ itm.number }}</td>
+              <td>{{ itm.quantity}}</td>
+              <td>
+
+                {% if itm.status == 'approved' %}
+                    <a href="#{{itm.pk}}" style="cursor:pointer" title="Approved"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+
+                    <a href='{% url "dashboard:history" itm.pk 'item' %}' style="position:relative;left:10px;"class="trigger_edit icon_space" title="History" item_id="{{item.pk}}"> <i class="fa fa-eye"></i> </a> 
+
+                  {% else %}
+                    <a style="cursor:pointer;" class="item_manipulate icon_space" item_id="{{itm.pk}}" item_name="{{itm.name}}" item_number="{{itm.number}}" item_quantity="{{itm.quantity}}" order_num="{{itm.requestOrder.ordernumber}}" item_category="{{itm.category}}" title="Approve this item" ><i class="fa fa-share-square-o approve_item"></i>
+                    </a>
+                
+                    <a href="#{{itm.pk}}" class="manipulat icon_space" item_id="{{itm.pk}}" item_name="{{itm.name}}" item_number="{{itm.number}}" item_quantity="{{itm.quantity}}" item_category="{{itm.category}}" title="Edit this item">
+                    <i class="fa fa-pencil-square-o"></i>
+                    </a>
+
+                    <a href='{% url "dashboard:delete_item" itm.pk %}' class="trigger_edit icon_space" style="cursor:pointer" title="Delete this item" item_id="{{itm.pk}}" onclick="return confirm('Are you sure you want to delete?')"> <i class="fa fa-trash-o"></i>
+                    </a>
+
+                    <a href='{% url "dashboard:history" itm.pk 'item' %}' class="trigger_edit icon_space" title="History" item_id="{{item.pk}}"> <i class="fa fa-eye"></i> </a>
+                  {% endif %}
+              </td>
+          </tr>
+          {% endfor %}
+      {% endfor %}
+    </table>
+{% endblock %}
+
+{% block modal %}
+
+  {% include 'wfm_admin_snippet/admin_request_edit.html' %}
+
+{% endblock %}

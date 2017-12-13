@@ -1,0 +1,153 @@
+{% extends 'wfm_admin/adminPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+
+{% block page_header %}
+<h2 id="order_status">{{status}}</h2>
+{% endblock page_header %}
+
+{% block search_action_panel %}
+  <div class="row-fluid">
+    <div class="col-md-12">
+      <div class="col-md-12 long" style="background:rgb(241,241,241);" >
+        {% block search_panel %}
+<!--                                <form action="" method='get'>
+-->   <div class="col-md-8">
+      {% block input_field %}
+      <div class="col-md-12"> 
+        <div class="col-md-11">
+          <input type='text' id="user_search_value" class="full" name="order" placeholder="Search Order Number, Email, Firstname, Lastname"/>
+        </div>
+        <div class="col-md-1">  
+          <i class="fa fa-search fa-3x" style="position:relative;right: 10px; color:#05BA8E; cursor:pointer;" 
+          id="submitSearch">
+          </i>
+        </div>
+      </div>
+      {% endblock %}
+        <!-- <input type='text' class="full" /> -->
+        <div class="col-md-12" style="position:relative; bottom:36px; left:16px;">
+
+        <div class="col-md-5 sub">
+          <label>From:</label>
+          <input type="date" id="begin_date" placeholder="From" style="color:black; position:relative; top:4px; left:7px; width:145px; padding-left:5px; height:35px; border-radius:8px;" data-date="" data-date-format="DD MMMM YYYY">
+        </div>
+
+        <div class="col-md-5 sub" style="position:relative; left:-20px;">
+          <label>To:</label>
+          <input type="date" id="end_date" placeholder="Date" style="color:black; position:relative; top:4px; left:5px; width:145px; padding-left:5px; height:35px; border-radius:8px;" data-date="" data-date-format="DD MMMM YYYY">
+        </div>
+        {% block search_input %}
+        {% endblock %}
+      </div>
+    </div>
+{% endblock %}
+
+{% block action_panel %}
+    <div class="col-md-4" style="background:rgb(241,241,241);">
+      <!--<div class="col-md-6 sub">
+        <div class="select_outer two" style="z-index: 3;">
+          <select id="mounth" class="cus_select">
+            <option value="hide">Select Option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6 sub">
+        <div class="select_outer two" style="z-index: 3;">
+          <select id="mounth" class="cus_select">
+            <option value="hide">Select Option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+          </select>
+        </div>
+      </div>-->
+    {% block action_dropdown %}
+      <div class="col-md-9" style="padding: 5px; padding-left: 0px; margin:0px;">
+        <div class="select_outer two">
+          <select id="bulk_action_select" class="cus_select">
+            <option value="hide">Select Action</option>
+            <option value="approve_selected_items">Approve</option>
+            <option value="delete_selected_items">Delete</option> 
+          </select>
+        </div>
+      </div>
+      {% endblock %}
+        <div class="col-md-3" style="padding:5px; margin:0px;">
+          <a class="btn btn-xs pull-right submit_orders_action myhover" style="cursor:pointer !important;" id="submit_orders_action">Go</a> 
+          <br/><br/><br/>
+        </div>
+      {% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block select_all_orders %}
+  {% if order_type %}
+<div class="row-fluid">
+  <div class="col-md-12" style="position:relative; left:-15px; margin-top:-30px;">  
+    <h4 style="position:relative; left:25px;"><input type="checkbox" style="position:relative; left:-8px;" id="select_all_orders">Select Multiple Orders</h4>
+    </div>
+</div>
+  {% endif %}
+{% endblock select_all_orders %}
+
+{% block order_details %}
+
+    <div class="row-fluid" id="requested_orders">
+        <div class="col-md-12  pageh" style="position:relative;">
+
+        {% for order in order_type %}
+              <!--Item -->
+              <div class="horder">
+                  <div class="col-md-12 hitem">
+                      <div class="col-md-8"><br/>
+                          <h2>
+                              <span><input type="checkbox" name="ch" id="{{order.pk}}">&nbsp; 
+                                #{{ order.ordernumber }}|{{ order.created_on_by|date }} | {{ order.requestee.get_full_name|title }}|{{order.requestee.email}}|{{order.requestee.useraccount.department}} {% if order.created_by_admin_on == "True" %} | Admin ID: {{ order.request.user.email }} {% endif %} </span>
+                                {% if order.status == "new" %}
+                                <span style="color:green">Order Status: {{order.status|title}}</span>
+                                {% elif order.status == "approved" %}
+                                <span style="color:blue">Order Status: {{order.status|title}}</span>
+                                {% elif order.status == "declined" %}
+                                <span style="color:red">Order Status: {{order.status|title}}</span>
+                                {% elif order.status == "processing" %}
+                                <span style="color:brown">Order Status: {{order.status|title}}</span>
+                                {% endif %}
+                          </h2>
+                            <input class="hidden" id="order_item_number" value="{{order.pk}}"> 
+    
+                      </div>
+                      <div class="col-md-2">
+                          <a href="{% url 'dashboard:items' order.pk %}" class="btn view_item myhover" style="cursor:pointer; width:200px !important;">View</a>                     
+                      </div>
+                      <div class="col-md-2">
+                          {% if order.status == "approved" %}
+                            <a href='JavaScript:newPopup("{% url 'dashboard:print-order' order.pk %}")' title = "Print Request Order" target="_balnk"><i class="fa fa-print" aria-hidden="true"></i></a>
+                            <a href='{% url "dashboard:history" order.pk 'order' %}' class="trigger_edit icon_space" title="History" item_id="{{item.pk}}"> <i class="fa fa-eye"></i> </a>
+                          {% else %}
+                            {% if order.status == "new" %}
+                            <a href="{% url 'dashboard:delete_order' order.pk %}" style="cursor:pointer;" class="delete_item" onclick="return confirm('Are you sure you want to delete?')" title = "Delete this order" ><i class="fa fa-trash-o" ></i></a>
+                            {% endif %}
+                            <a href='{% url "dashboard:history" order.pk 'order' %}' class="trigger_edit icon_space" title="History" item_id="{{item.pk}}"> <i class="fa fa-eye"></i>
+                            </a>
+                          {% endif %}
+                      </div>
+
+                  </div>
+              </div>
+        {% empty %}
+           <strong class="text-center">No order(s) in this category </strong> 
+      {% endfor %}
+
+  </div>
+</div>
+
+{% endblock order_details %}

@@ -1,0 +1,335 @@
+<script>
+	$('body').on('click','#submitSearch',function(e){
+		e.preventDefault();
+
+		var requested_order = $("#user_search_value").val();
+		var startdate = $("#begin_date").val();
+		var enddate = $("#end_date").val();
+
+		$('#startdate').val(startdate);
+		$("#enddate").val(enddate);
+		$('#request_order').val(requested_order);
+
+		if ((requested_order == "") && (startdate == "") && (enddate == "")){
+			alert("Please enter a search parameter");
+		}else{
+			$("#searchform").submit();
+			return true;
+		}
+	});
+</script>
+
+<script>
+	$('body').on('click','#items_search',function(e){
+		e.preventDefault();
+
+		var requested_item = $("#user_search_item").val()
+		$("#requested_item").val(requested_item);
+
+		if (requested_item == ""){
+			alert("Please enter a search parameter");
+		}else{
+			$("#searchItemForm").submit();
+			return true
+		}
+	});
+</script>
+
+<script>
+	$('.dropdown').click(function () {
+		$(this).toggleClass('active');
+		$(this).parent().siblings().children('.dropdown') // get siblings of current elem
+		.removeClass('active'); // remove class clicked from siblings
+	});
+</script>
+
+<script>
+// 	$('body').on("click",".view_item",function(){
+// 		var item_id = $(this).parent().parent().find('#order_item_number').val();
+// 		$("#item_request").val(item_id);
+// 		$("#ItemForm").submit();
+// 	});
+</script>
+
+<script>
+// 	$('body').on("click",".delete_item",function(){
+// 		var item_id = $(this).parent().parent().find('#order_item_number').val();
+// 		var response = confirm('Are you sure you want to delete this request order?' + " " + item_id);
+// 		if (response){
+// 			$("#item_to_delete").val(item_id);
+// 			$("#deleteForm").submit();
+// 		     return true;
+//         }else{
+//             return false;
+//         }
+// 	});
+</script>
+
+<script>
+  //to select all checkboxes in items in order page
+  $('body').on('click','#select_all',function(){
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>
+
+<script>
+  //to select all checkboxes in request orders page
+  $('body').on('click','#select_all_orders',function(){
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>
+	
+<script>
+	//to carry out instant approval of request orders
+	$("body").on("click",".submit_orders_action",function(){
+		// alert("iyede clicked");
+
+	    var checked_items = []
+	    var action = $("#bulk_action_select option:selected").text()
+	    var statuses = []
+
+	    $("input:checkbox[name=ch]:checked").each(function(){
+	        checked_items.push($(this).attr("id"));
+	        statuses.push($(this).attr("item_id"));
+
+	    });
+
+	    if ((checked_items == "") || (action == "Select Action")){
+	        alert('Please Check to see if you have selected an order or orders and have selected an appropriate action!!!');
+	    }else{
+	        var response = confirm('Please confirm that the selected action for this request order(s) is ' + '"' + action + '"');
+	        if (response){
+
+	            $("#order_update_type").val(action);
+	            $("#orders_ids").val(checked_items);
+	           	$("#orders_status").val(statuses);
+
+	            //submit form
+	            $("#actionForm").submit();
+	            return true;
+	        }else{
+	            return false;
+	        }
+	    }
+    });
+</script>
+
+	
+<script>
+	//to carry out instant approval of request order bulk of items
+	$("body").on("click",".submit_items_action",function(){
+		// alert("isaiah clicked");
+
+	    var checked_items = [];
+	    var action = $("#bulk_action_select_item option:selected").val();
+	    var statuses = [];
+	    var qty = [];
+	    var code_numbers = [];
+	    var order_id = $(this).attr("order_number_id");
+ 
+	    $("input:checkbox[name=order_item_pk]:checked").each(function(){
+	        checked_items.push($(this).attr("id"));
+	        statuses.push($(this).attr("item_id"));
+	       	qty.push($(this).attr("item_qty"));
+	        code_numbers.push($(this).attr("item_num"));
+
+
+
+	    });
+
+	    if ((checked_items == "") || (action == "Select Action")){
+	        alert('Please Check to see if you have selected an item or items and have selected an appropriate action!!!');
+	    }else{
+	        var response = confirm('Please confirm that the selected action for this item(s) is ' + '"' + action + '"');
+	        if (response){
+
+	            $("#items_update_type").val(action);
+	            $("#items_ids").val(checked_items);
+	           	$("#items_status").val(statuses);
+	           	$("#items_num").val(code_numbers);
+	           	$("#items_qty").val(qty);
+	           	$("#order_id").val(order_id);
+
+	            //submit form
+	            $("#actionItemForm").submit();
+	            return true;
+	        }else{
+	            return false;
+	        }
+	    }
+    });
+</script>
+
+
+<script>
+
+    $("body").on("click", ".manipulate", function(){
+        $('#itemeditModal').modal('show');
+
+        var $this = $("#itemeditModal");
+
+        $this.find("#id_item_id").val($(this).attr('item_id'));
+        $this.find("#id_item_name").val($(this).attr('item_name'));
+        $this.find("#id_item_category").val($(this).attr("item_category"));
+        $this.find("#id_item_num").val($(this).attr("item_number"));
+        $this.find("#id_item_quantity").val($(this).attr("item_quantity"));
+
+    });
+        
+</script>
+
+
+<script>
+
+    $("body").on("click", "#create_item", function(){
+        $('#itemcreateModal').modal('show');
+    });
+        
+</script>
+
+
+<script>
+
+    $("body").on("click", ".manipulat", function(){
+        $('#requestitemeditModal').modal('show');
+
+        var $this = $("#requestitemeditModal");
+
+        $this.find("#id_item_id").val($(this).attr('item_id'));
+        $this.find("#id_item_name").val($(this).attr('item_name'));
+        $this.find("#id_item_category").val($(this).attr("item_category"));
+        $this.find("#id_item_num").val($(this).attr("item_number"));
+        $this.find("#id_item_quantity").val($(this).attr("item_quantity"));
+
+    });
+        
+</script>
+
+	
+<script>
+	//to carry out instant approval of request order bulk of items
+	$("body").on("click",".item_manipulate",function(){
+		var response = confirm('Are you sure you want to approve just this item?');
+		if (response){
+	       
+	        $("#item_status").val("approved");
+	       	$("#item_num").val($(this).attr('item_number'));
+	       	$("#item_qty").val($(this).attr('item_quantity'));
+	       	$("#order_num_id").val($(this).attr('order_num'));
+	       	$("#item_id").val($(this).attr('item_id'));
+	        //submit form
+	        $("#requestactionItemForm").submit();
+	        return true;
+        }else{
+        	return false;
+        }
+    });
+</script>
+
+<script>
+
+	// Popup window code
+	function newPopup(url) {
+	    popupWindow = window.open(
+	        url,'popUpWindow','height=600,width=700,right=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+	}
+	
+</script>
+
+
+<script>
+
+	$('body').on('click','#submit_user_Search',function(){
+		var searched_value = $('#search_for_user_value').val();
+		if (searched_value == ""){
+			alert("Please Enter a search value");
+			return false;
+		}
+		else{
+			$('#search_value').val(searched_value);
+		    $("#searchUserForm").submit();
+		    return true;
+		}
+	});
+
+	$('.nbr').on('keypress', function(ev) {
+    var keyCode = window.event ? ev.keyCode : ev.which;
+    //codes for 0-9
+    if (keyCode < 48 || keyCode > 57) {
+        //codes for backspace, delete, enter
+        if (keyCode != 0 && keyCode != 8 && keyCode != 13 && !ev.ctrlKey) {
+            ev.preventDefault();
+        }
+      }
+	});
+
+</script>
+
+
+<script>
+
+	$('body').on('click','#action_dropdown_go',function(){
+		var users = [];
+		var status = $('#user_action option:selected').text();
+		$('input:checkbox:checked').each(function(){
+			users.push($(this).attr('user_id'));
+		});
+		// alert(status);
+		if(users == ""){
+			alert("Please select user to be modified");
+			return false;
+		}else if(status == "Select Action"){
+			alert("Please select appropriatre action");
+			return false;
+		
+		}else{
+			$("#users_access_ids").val(users);
+			$("#users_access_status").val(status);
+			//submit form
+	        $("#UserAccessForm").submit();
+	        return true;
+
+		}
+	});
+
+	$('body').on('click','#create_supply',function(){
+
+		var items_selected = [];
+	 	var item_qty = [];
+
+    	$('#mysupplytable').find('tr').each(function (){
+        	var row = $(this);
+        	if (row.find('input[type="checkbox"]').is(':checked') &&
+            	row.find('input[type=text][name=supply_qty]').val().length <= 0) {
+            	return false;
+        	}else if(row.find('input[type=checkbox][name=supply_chkbox]').is(':checked') && 
+				row.find('input[type=text][name=supply_qty]').val().length > 0){
+				items_selected.push(row.find('input[type=checkbox][name=supply_chkbox]').val());
+				item_qty.push(row.find('input[type=text][name=supply_qty]').val());
+			}
+   		});
+
+		// alert(items_selected + " " + item_qty);
+
+   		if(items_selected == ""){
+			alert("Please select an item and desired quantity");
+			return false;
+		}else{
+			$("#supply_items_ids").val(items_selected);
+			$("#supply_items_qty").val(item_qty);
+			//submit form
+	        $("#supplyForm").submit();
+	        return true;
+
+		}
+	});
+
+    $("body").on("click", "#add_new_items", function(){
+        // alert("was clicked");  
+        $('#addAnotherItemModal').modal('show');
+
+    });
+    
+    
+
+</script>

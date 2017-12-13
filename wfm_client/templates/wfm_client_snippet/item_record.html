@@ -1,0 +1,29 @@
+<tr>
+    <td>{{ request_item.name }}</td>
+    <td>{{ request_item.category }}</td> 
+    <td>{{ request_item.number }}</td>       
+    <td>{{ request_item.quantity }}</td>  
+   
+
+    {% if show_delete_btn = True %}
+    <td>
+
+        <div class="hlinks">
+            {% if not user.is_staff %}
+          <a href="#{{request_item.pk}}" class="edit_request_item" item_id="{{request_item.pk}}" item_name="{{request_item.name}}" item_quantity="{{request_item.quantity}}" item_category="{{request_item.category}}" item_num="{{request_item.number}}">
+                <i class="fa fa-pencil-square-o"></i>
+            </a>
+            {% endif %}
+            <!-- <a href="#" data-toggle="modal" data-target="#myModal" class="add_cert_no" >
+                <i class="fa fa-pencil-square-o"></i> -->
+            <a href="{% url 'client:deleteItem' request_item.pk 'item' %}" onclick="return confirm('Are you sure you   want to delete this item?')";>
+                <i class="fa fa-trash-o"></i>
+            </a>
+        </div>
+        <!-- <p>{{order_item.id}}</p> -->
+
+        <!-- Modal -->
+        
+    </td>
+    {% endif %}
+</tr>

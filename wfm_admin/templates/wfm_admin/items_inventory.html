@@ -1,0 +1,129 @@
+{% extends 'wfm_admin/adminPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+
+{% block page_header %}  
+	<h2 class="page-header"> Inventory </h2>
+{% endblock page_header %}
+
+{% block select_all_orders %}
+{% endblock select_all_orders %}
+
+{% block search_action_panel %}
+<div class="row-fluid">
+	<div class="col-md-12">
+		<div class="col-md-12 long" style="background:rgb(241,241,241);" >
+			{% block search_panel %}
+					<div class="col-md-8">
+							{% block input_field %}
+							<div class="col-md-12" style="margin-bottom:-20px;">	
+						      	<div class="col-md-11">
+									<input type='text' id="user_search_item" class="full" name="order" placeholder="Item Name, Category or Code Number"/>
+						        </div>
+						        <div class="col-md-1">	
+						        	<i class="fa fa-search fa-3x" style="position:relative;right: 10px; color:#05BA8E; cursor:pointer;"
+						        	id="items_search">
+						        </i>
+						        </div>
+						      </div>
+							{% endblock %}
+							<div class="col-md-12">
+
+								<div class="col-md-4 sub">
+                                   <!-- <i>From:</i>
+									<input type="date" id="begin_date" placeholder="Date" style="color:black; position:relative; top:4px; left:7px; width:145px; padding-left:5px; height:35px; border-radius:8px;" data-date="" data-date-format="DD MMMM YYYY"> -->
+								</div>
+
+								<div class="col-md-4 sub" style="position:relative; left:-20px;">
+									<!-- <i>To:</i>
+									<input type="date" id="end_date" placeholder="Date" style="color:black; position:relative; top:4px; left:7px; width:145px; padding-left:5px; height:35px; border-radius:8px;" data-date="" data-date-format="DD MMMM YYYY"> -->
+								</div>
+<!-- 
+								<div class="col-md-4 sub">
+									<input type='submit' id="items_search" class="full btn myhover" value="Search">
+								</div> -->
+							</div>
+						</div>
+				{% endblock %}
+			{% block action_panel %}
+				
+			    {% block action_dropdown %}
+				{% endblock %}
+				<div class="col-md-3" style="padding:5px; margin:0px;">
+					<a class="btn btn-xs pull-right myhover" style="cursor:pointer !important; position: relative;top: 25px;left: 38px;" id="create_item">Add New Item</a> 
+					<br/><br/><br/>
+				</div>
+				
+			{% endblock %}
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block order_details %}
+	<div >
+		<table width="80%" border="0" id="dest" align="center" class="table table-striped">
+			<tr>
+				<th>S/No</th>
+				<th>Name</th>
+				<th>Category</th>        
+				<th>Code Number</th>
+				<th>Image</th>
+				<th>Quantity</th>
+			</tr> 
+			{% for item in items %}
+				<tr>
+<!-- 					<td>{{ forloop.counter }}</td>
+ -->				<td>{{ forloop.counter0|add:items.start_index}}</td> 
+					<td>{{ item.item_name }}</td>
+					<td>{{ item.item_category }}</td>
+					<td>{{ item.item_num }}</td>
+					<td><a href="{{ item.item_image.url}}">{{item.item_image|trunc}}</a></td>
+					<td>{{ item.item_quantity }}</td>
+					<td>
+						<a href="#{{item.pk}}" class="manipulate icon_space" item_id="{{item.pk}}" item_name="{{item.item_name}}" item_number="{{item.item_num}}" item_image="{{item.item_image}}" item_quantity="{{item.item_quantity}}" item_category="{{item.item_category}}" title="Edit this item">
+                			<i class="fa fa-pencil-square-o"></i>
+            			</a>
+<!-- 
+						<a href='{% url "dashboard:delete_stock_item" item.pk %}' class="trigger_edit icon_space" title="Delete this item" item_id="{{item.pk}}" onclick="return confirm('Are you sure you want to delete?')"> <i class="fa fa-trash-o"></i> </a> -->
+
+						<a href='{% url "dashboard:history" item.pk 'inventory' %}' class="trigger_edit icon_space" title="History" item_id="{{item.pk}}"> <i class="fa fa-eye"></i> </a>
+
+					</td>
+					
+				</tr>
+			{% empty %}
+           			<strong class="text-center">No item(s) in this category </strong> 
+      		{% endfor %}
+
+		</table>
+		<div class ="pagination">
+			<span >
+				{% if items.has_previous %}
+					  <a href="?page={{ items.previous_page_number }}">Previous</a>
+				  {% endif %}
+
+   				 {% for page in items.paginator.page_range %}
+				  {% ifequal page items.number %}
+				    <span class="current"><b>{{ page }}</b></span>
+				  {% else %}
+				    <a href="?page={{ page }}"> {{ page }}</a>
+				  {% endifequal %} 
+				 {% endfor %}
+
+				 {% if items.has_next %}
+					  <a href="?page={{ items.next_page_number }}">Next</a>
+				{% endif %}
+			</span>
+		</div>
+	</div>
+
+{% endblock order_details %}
+
+{% block modal %}
+
+	{% include 'wfm_admin_snippet/admin_edit_item.html' %}
+	{% include 'wfm_admin_snippet/add_new_item.html' %}
+
+{% endblock %}

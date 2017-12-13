@@ -1,0 +1,102 @@
+{% extends 'wfm_client/requestViewPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+
+
+{% block place_order %}
+{% endblock %}
+
+ <!--ID "sticky_top" for sticky -->
+
+                <!-- Page In -->
+                <div class="page_in">
+                      {% block view_orders %}
+
+                        {% if not items_requested %}
+                                <div class="content_outer three no_item" id="no_cart_items_div">
+                                    <div class="col-md-12 content">
+                                        <p>You have <strong>no items</strong> currently in your cart!
+                                            <br/><strong>Add items now!</strong></p>
+                                    </div>
+                                </div>
+
+                        {% else %}    
+                      
+                        <h4 style="color:red;">NB: Please carefully review your request and then click on <strong style="color:blue">Place Request Button </strong></h4>
+                        <div class="content_outer three tablesec step" id="items_table_div">
+                            <div class="col-md-12 content" style="position: relative;bottom: 45px;">                                
+                                <h1>Preview your Requests</h1>
+                                  {% include 'wfm_client_snippet/tableheader.html'%}                                                    
+                                <!-- <div id="item_list">                                                -->
+                                    {% for item in items_requested %}
+                                        {% include 'wfm_client_snippet/item_record.html' with request_item=item  show_delete_btn=True %}
+                                        <!-- include 'jsa_client_snippet/edit_item.html' with order_item=item show_delete_btn=True -->    
+                                    {% endfor %}
+                                <!-- <div> -->
+                                </table>
+
+
+                              {% include 'wfm_client_snippet/getCategory.html' %}  
+                            
+                              <form method="POST" action="{% url 'client:client_requestViewPage' %}">
+                                  {% csrf_token %}                                                                                                                                                             
+                                                 
+                                    <div class="col-md-12 hidden">
+                                        <input id="id_user" name="user" type="text" placeholder="User" value="{{user.email}}"/> 
+                                    </div>                          
+                                                                                     
+                                    <div class="col-md-12">
+                                        <input type="submit" class='btn' value="Save"/> <br/> 
+                                    </div>
+
+                                  </div>
+
+                              </form>
+
+                            {% endif %}
+
+                            {% endblock %} 
+                            
+                            </div>
+                        </div>
+                        <!-- Preview Cart -->
+                        <!-- No Items -->                        
+                        <!-- Footer -->                                   
+
+                        </div>
+                        <!-- Page In -->
+                    </div>
+                    <!-- Page Inner -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="floater_bottom"></div>
+ </div>
+</div>
+    <!--Index -->
+
+{% block modal_forms %}
+    {% include 'wfm_client_snippet/edit_request_item.html' %} 
+{% endblock %}
+
+{% block specific_scripts %}
+
+<script> 
+
+    var input = document.getElementById("id_item_name");
+    var awesomplete = new Awesomplete(input, {
+      
+      minChars: 2,
+      maxItems: 20,
+      autoFirst: true   
+               
+    });       
+    
+    awesomplete.list = {{ all_items|safe }}
+
+</script>
+
+{% endblock %}    
+

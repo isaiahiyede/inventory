@@ -1,0 +1,38 @@
+{% load staticfiles %}
+    <script src="{% static 'client/js/jquery.min.js' %}"></script>
+    <script>window.jQuery || document.write('{% static "dashboard/js/jquery.min.js" ');</script>
+    <script src="{% static 'client/js/bootstrap.min.js' %}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'client/js/ie10-viewport-bug-workaround.js' %}"></script>
+    <!-- Script for jquery animations -->
+    <script src="{% static 'client/js/script.js' %}"></script>
+
+    <!-- Script for sticky -->
+    <script src="{% static 'client/js/jquery.sticky.js' %}"></script>
+    <script type="text/javascript" src="{% static 'client/js/jquery.validate.js' %}"></script>
+    
+    <script src="{% static 'client/js/awesomplete.min.js' %}"></script>
+
+
+    <script>
+        $('#additem').modal('hide');
+        /* Sticky Your Order Right Side */
+        $(document).ready(function () {
+            $("#sticky_right").sticky({
+                topSpacing: 168
+            });
+        });
+        /* Sticky Your Order Right Side */
+        $(document).ready(function () {
+            $("#sticky_top").sticky({
+                topSpacing: 0
+            });
+        });
+        
+        
+    </script>
+    
+    
+    
+
+    

@@ -1,0 +1,84 @@
+{% extends 'wfm_admin/adminPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+
+{% block page_header %}
+<h2 id="order_status">Comparative Analysis</h2>
+{% endblock page_header %}
+
+{% block search_action_panel %}
+{% endblock %}
+
+{% block select_all_orders %}
+{% endblock select_all_orders %}
+
+{% block order_details %}
+<div class="col-md-12">
+   
+  <div class="col-md-4">
+      <form id="analysis" name="analysisForm" action="{% url 'analytics:departmentalanalysis' %}" method="POST">
+        {% csrf_token %}
+
+        <div style="position:relative; top:10px;" >
+          <i>From:</i>
+          <input type="date" style="border-radius:4px" id="begin_date" placeholder="Date" data-date="" data-date-format="DD MMMM YYYY" name="start_date" value="">
+        </div>
+
+        <div style="position:relative; top:25px;" >
+          <i>To:</i>
+          <input style="position:relative; left:18px; border-radius:4px" type="date" id="end_date" placeholder="Date" data-date="" data-date-format="DD MMMM YYYY" name="end_date" value="">
+        </div>
+
+        <div class="col-md-12" style="z-index:3; position:relative; top:35px;">
+            <label style="position:relative; right:14px;" >Dept:<textarea style="right:2px;" id="input-local-prevent-duplicates" rows="3" cols="20" name="depts" value="" placeholder="Enter Department Names" type="text"/></textarea></label>
+        </div> 
+
+        <div class="radio" style="position:relative; top:25px;" >
+          <label><input type="radio" name="optradio" value="pie_chart" required>Pie Chart</label>
+        </div>
+
+        <div class="radio" style="position:relative; top:25px;" >
+          <label><input type="radio" name="optradio" required value="bar_chart">Bar Chart</label>
+        </div> 
+
+
+        <input class="btn" style="position:relative; top:40px; background-color:grey; border-radius:4px; border-color:#fff; width:30%;" type="reset" value="Clear">
+
+        <input class="btn" style="position:relative; border-color:#fff; width:30%; top:40px; left:30px; background-color:yellow; border-radius:4px; color:black;" type="submit" name="submit_for_item_update" id="submit_item_for_update" value="Submit">
+
+      </form>
+  </div>
+  <div class="col-md-4">
+  </div> 
+  <div class="col-md-4" style="border:2px;">
+  </div> 
+</div>
+
+{% endblock order_details %}
+
+{% block script %}
+
+    <script>        
+
+        var input = document.getElementById("input-local-prevent-duplicates");
+        var awesomplete = new Awesomplete(input, {
+          minChars: 2,
+          maxItems: 20,
+          autoFirst: true,
+          
+          
+          filter: function(text, input) {
+                return Awesomplete.FILTER_CONTAINS(text, input.match(/[^,]*$/)[0]);
+            },
+
+          replace: function(text) {
+              var before = this.input.value.match(/^.+,\s*|/)[0];
+              this.input.value = before + text + ",";
+            }
+        });
+        
+        awesomplete.list = {{ all_depts|safe }}
+        
+    </script>
+
+{% endblock %}

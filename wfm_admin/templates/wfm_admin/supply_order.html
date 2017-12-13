@@ -1,0 +1,190 @@
+{% load staticfiles %}
+{% load main_template_tags %}
+
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://getbootstrap.com/examples/dashboard/ -->
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		
+    	<link rel="icon" href="http://getbootstrap.com/favicon.ico">
+		<!--<link rel="icon" href="{% static 'img/favicon.ico' %}">-->
+
+		<title> WFM - {% block title %} Dashboard {% endblock title %}</title>
+		<link href = "{% static 'client/css/bootstrap.min.css' %}" rel="stylesheet" type='text/css'>
+		<!-- Custom styles for this template -->
+		<link href= "{% static 'client/css/dashboard.css' %}" rel="stylesheet" type='text/css'>
+		<link href="{% static  'client/css/theme.css' %}" rel="stylesheet" type='text/css'>
+		<link href="{% static  'client/css/index.css' %}" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+		<link rel="stylesheet" href="{% static 'client/css/paymentfont.min.css' %}">
+
+		<!-- Font -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+		<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+		<script src="{% static 'client/js/ie-emulation-modes-warning.js' %}"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<link rel="stylesheet" href="{% static 'client/css/custom_stylesheet.css' %}"/>
+
+    	<style>
+
+    	th{
+    		width:30%;
+    		}
+
+    	.table>tbody>tr>th,
+    	.table>tbody>tr>td{
+   			line-height: 0.4px;
+			}
+    	</style>
+		
+	</head>
+
+  <body>
+
+	<div class="col-md-6" style="position:relative; bottom:40px;">
+
+		<h4 style="position:relative; left:200px;"><strong>REQUEST FOR REPLENISHMENT</strong></h4>
+
+		{% for item in items_cat_list %}
+
+			{% if item == "Stationery" %}
+
+				<table border="0" class="table table-bordered">
+					<tr>
+						<th>S/N</th>
+						<th>OFFICE STATIONERY</th>
+						<th>Qty Required</th>
+						<th>Rate</th>
+						<th>Amount</th>
+					</tr>
+					{% for itm in item_obj %}
+						{% if itm.item_category == "Stationery" %}
+							<tr>
+								<td>{{itm.item_num}}</td>
+								<td>{{itm.item_name}}</td>
+								<td>{{itm.item_quantity_required}}</td>
+								<td></td>
+								<td></td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</table>
+
+			{% endif %}
+
+		{% if item == "Cleaning" %}
+
+			<table border="0" class="table table-bordered">
+				<tr>
+					<th>S/N</th>
+					<th>CLEANING</th>
+					<th>Qty Required</th>
+					<th>Rate</th>
+					<th>Amount</th>
+				</tr>
+				{% for itm in item_obj %}
+					{% if itm.item_category == "Cleaning" %}
+						<tr>
+							<td>{{itm.item_num}}</td>
+							<td>{{itm.item_name}}</td>
+							<td>{{itm.item_quantity_required}}</td>
+							<td></td>
+							<td></td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+
+		{% endif %}
+
+		{% if item == "Computing" %}
+
+			<table border="0" class="table table-bordered">
+				<tr>
+					<th>S/N</th>
+					<th>COMPUTING</th>
+					<th>Qty Required</th>
+					<th>Rate</th>
+					<th>Amount</th>
+				</tr>
+				{% for itm in item_obj %}
+					{% if itm.item_category == "Computing" %}
+						<tr>
+							<td>{{itm.item_num}}</td>
+							<td>{{itm.item_name}}</td>
+							<td>{{itm.item_quantity_required}}</td>
+							<td></td>
+							<td></td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+
+		{% endif %}
+
+		{% if item == "Beverages" %}
+
+			<table border="0" class="table table-bordered">
+				<tr>
+					<th>S/N</th>
+					<th>BEVERAGES</th>
+					<th>Qty Required</th>
+					<th>Rate</th>
+					<th>Amount</th>
+				</tr>
+				{% for itm in item_obj %}
+					{% if itm.item_category == "Beverages" %}
+						<tr>
+							<td>{{itm.item_num}}</td>
+							<td>{{itm.item_name}}</td>
+							<td>{{itm.item_quantity_required}}</td>
+							<td></td>
+							<td></td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+
+		{% endif %}
+
+		{% if item == "Miscellaneous" %}
+
+			<table border="0" class="table table-bordered">
+				<tr>
+					<th>S/N</th>
+					<th>MISCELLANEOUS</th>
+					<th>Qty Required</th>
+					<th>Rate</th>
+					<th>Amount</th>
+				</tr>
+				{% for itm in item_obj %}
+					{% if itm.item_category == "Miscellaneous" %}
+						<tr>
+							<td>{{itm.item_num}}</td>
+							<td>{{itm.item_name}}</td>
+							<td>{{itm.item_quantity_required}}</td>
+							<td></td>
+							<td></td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+
+		 {% endif %}
+       {% endfor %}
+	</div>
+
+  </body>
+
+</html>
+

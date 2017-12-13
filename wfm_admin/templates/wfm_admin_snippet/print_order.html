@@ -1,0 +1,56 @@
+{% load main_template_tags %}
+
+
+<html>
+   <head>
+        <style type="text/css">
+                table_header{
+                        background-color: #82CAFA;
+                        }
+                table_header.th{
+                        font-weight: 100
+                        }
+        </style>
+   </head>
+        
+   <body>
+
+                
+        <table border="0">
+            <th style="position: relative;left: 120px;">Order No:{{order.ordernumber}} -  Manifest ({{order.created_on_by|date:'d/m/Y'}})<br/>
+            Created By: {{request.user.email}}&nbsp; - No of items: 
+            {{order.requestitem_set.count}}
+            </th>
+        </table>
+        
+
+        <table style=" border-spacing: 0; border-collapse: separate; border-color: gray; border: solid 1px #ddd;width:600px; margin-left:39px;" class="table table-striped">
+                
+               
+                
+                <tr style="background-color: #F0FFF0;">
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Name</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Category</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Code Number</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Quantity</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Status</td>
+
+                </tr>
+
+
+                  {% for item in items_assigned_to_order %}
+                  <tr>
+                      <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ item.name }}</td>
+                      <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ item.category }}</td>
+                      <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ item.number }}</td>
+                      <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ item.quantity }}</td>
+                      <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ item.status }}</td>
+                  </tr>
+                   {% endfor %}
+                
+        </table>
+
+   </body>
+</html>
+
+

@@ -1,0 +1,305 @@
+  <script>
+  
+        $('#additem').modal('hide');
+        /* Sticky Your Request Number Right Side */
+        $(document).ready(function () {
+            $("#sticky_right").sticky({
+                topSpacing: 168
+            });
+        });
+        /* Sticky Your Request Number Right Side */
+        $(document).ready(function () {
+            $("#sticky_top").sticky({
+                topSpacing: 0
+            });
+        });
+
+    </script>
+
+    <script>
+
+        $("body").on("click", "#add_item", function(event){
+          // alert('was clicked')
+          event.preventDefault();
+         // var csrf_token = $('input[name = csrfmiddlewaretoken').val();
+
+         var reg  = /^\+d$/
+         var qty  = document.getElementById("id_quantity").value;
+         var Name = document.getElementById("id_name").value;       
+         
+         if (Name == ""){
+            alert("please select an appropriate name")
+            return false;
+            }     
+
+         else if (qty == ""){
+            alert("please select an appropriate quantity")
+            return false;
+            }
+                     
+           
+         else if (qty === ""){
+            alert("Please enter an appropriate quantity");
+            return false;
+            }
+           
+         else if (qty.length > 3) {
+            alert("Quantity must be at least three figures");
+            return false;
+           }
+
+         else if (qty <= 0) {
+            alert("Quantity must be at positive whole number");
+            return false;
+           }
+           
+         else if (qty.match(reg)) {
+            alert("Please enter a number");
+            return false;
+           }
+           
+       
+         else{
+                   
+              $(".loadgif").show();
+              $.ajax({
+                url: "{% url 'client:request_form' %}",
+                type: "POST",
+                data: $("#add_item_form").serialize(),
+                
+                success: function(data){
+                  console.log("working");
+                  //location.reload(true);
+                  //if (data.result != 'fail') {
+                   
+                    $("#preview_order_items").find('tbody').append(data);
+                    $("#items_table_div").show();
+                    $("#no_cart_items_div").hide();
+                    $("#alert_msg").html("Item successfully added");
+                    $(".loadgif").hide();
+                    
+                  //}else{
+                  //     $("#alert_msg").html(data.response);                        
+                  //
+                  //}
+                  $(".col-md-12.alert").removeClass("hidden");
+                  //$("#add_item_form").
+                  $("#add_item_form").trigger("reset");                                         
+                                       
+                },                        
+
+                error: function(data){
+                  //console.log("");
+                  $("#alert_msg").html("Problem dey");
+                  $(".loadgif").hide();
+                  //$("#alert_msg_div").removeClass("hidden");
+                }
+
+              });
+             }          
+          });                          
+                
+    </script>
+
+
+    <script>    
+      
+      $("#id_name").blur(function(e) {
+
+          e.preventDefault();
+
+          var selected_option = $('#id_name').val();
+          if (selected_option === ""){
+            alert("Please select request item")
+            }
+
+            else{
+            $("#item_request_name").val(selected_option)
+
+            $.ajax({
+
+                url:"{% url 'client:getCategory' %}",
+                type:"POST",
+                data:$("#item_category_form").serialize(),
+
+                success: function(data){
+                  $("#id_category").val(data.item_category);
+                  $("#id_number").val(data.item_number);
+                },
+
+                error: function(data){
+                  alert("Item not found");
+                }
+
+            })
+
+          }
+      });
+      
+    </script>
+
+
+    <script>    
+      
+      $("#id_item_name").blur(function(e) {
+
+          e.preventDefault();
+
+          var selected_option = $('#item_name').val();
+          if (selected_option === ""){
+            alert("Please select request item")
+            }
+
+            else{
+            $("#item_request_name").val(selected_option)
+
+            $.ajax({
+
+                url:"{% url 'client:getCategory' %}",
+                type:"POST",
+                data:$("#item_category_form").serialize(),
+
+                success: function(data){
+                  $("#d_item_category").val(data.item_category);
+                  $("#d_item_num").val(data.item_number);
+
+                },
+
+                error: function(data){
+                  alert("Item not found");
+                }
+
+            })
+
+          }
+      });
+      
+    </script>
+
+
+    <script>
+
+        $("body").on("click", ".edit_request_item", function(){
+            // alert("was clicked");  
+            $('#edititemModal').modal('show');
+
+            var $this = $("#edititemModal");
+
+            $this.find("#id_item_id").val($(this).attr('item_id'));
+            $this.find("#id_item_name").val($(this).attr('item_name'));
+            $this.find("#id_item_category").val($(this).attr("item_category"));
+            $this.find("#id_item_quantity").val($(this).attr("item_quantity"));
+            $this.find("#id_item_num").val($(this).attr("item_num"));
+
+
+            });
+        
+    </script>
+    
+    <script>
+        
+        $("#edit_item").click(function(){
+           
+            
+           var item_name = $("#id_item_name").val();
+           var category  = $("#id_item_category").val();
+           var quantity  = $("#id_item_quantity").val();
+           
+           var reg = /^\+d$/
+           
+           if (item_name === "") {
+            alert("Please select an item");
+            return false;
+           }
+           
+           else if (category === "") {
+             alert("Please enter a Category");
+             return false;
+           }
+           
+           else if (quantity === ""){
+             alert("Please enter an appropriate quantity");
+             return false;
+           }
+           
+           else if (quantity.length > 3) {
+             alert("Quantity must be at least three figures");
+             return false;
+           }
+
+           else if (quantity <= 0) {
+             alert("Quantity must be at positive whole number");
+             return false;
+           }
+           
+           else if (quantity.match(reg)) {
+             alert("Please enter a number");
+             return false;
+           }
+           
+           else{
+            return true;
+           }
+           
+        });        
+            
+    </script>
+    
+    
+    <script>    
+      
+      $("#id_item_name").blur(function(e) {
+
+          e.preventDefault(); 
+         
+          var selected_option = $('#id_item_name').val();
+          if (selected_option === ""){
+            alert("Please select request item");
+            }
+
+            else{
+            $("#item_request_name").val(selected_option)
+
+            $.ajax({
+
+                url:"{% url 'client:getCategory' %}",
+                type:"POST",
+                data:$("#item_category_form").serialize(),
+
+                success: function(data){
+                  $("#id_item_category").val(data.item_category);
+                  $("#id_item_num").val(data.item_number);
+
+                },
+
+                error: function(data){
+                  alert("Item not found");
+                }
+
+            });
+
+          }
+      });
+      
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+media/
+static/files
+
+#Mac DS_Store
+*.DS_Store
+*.pyc
+*.db

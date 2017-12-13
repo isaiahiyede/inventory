@@ -1,0 +1,55 @@
+{% extends 'wfm_general/indexPage.html' %}
+{% load staticfiles %}
+
+{% block navigation_top %}
+
+        <header id="header">
+            <nav id="main-nav" class="navbar navbar-default navbar-fixed-top" role="banner">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <i class="fa fa-cog fa-spin" style="font-size:50px; color:#05ba8e; margin-top:25px;"></i>
+                    </div>
+                        
+                    <div class="collapse navbar-collapse navbar-right">
+                        <ul class="nav navbar-nav">
+                            <li class="scroll active"><a href="/">Home</a></li>                         
+                            
+                        </ul>
+                    </div>
+                </div><!--/.container-->
+            </nav><!--/nav-->
+        </header><!--/header-->
+
+{% endblock %}
+
+{% block carousel_section %}{% endblock %} 
+{% block about_section %}{% endblock %}
+{% block gallery_section %}
+
+<!-- Login Section -->
+    <div class="container-fluid" style="margin-top:150px; min-height:615px;">
+      <div class="row">
+          <div class="col-md-12">                   
+              
+                <h3 style="text-align:center; color:#05ba8e;">Hurray!!! you registration was successful. Click <a href="{% url 'general:userLogin' %}">here</a> to proceed to login page</h3> 
+             
+          </div>                              
+      </div>
+    </div>    
+    
+{% endblock %} 
+{% block contact_section %}{% endblock %} 
+{% block testimonial_section %}{% endblock %}
+{% block map_section %}{% endblock %}
+
+
+
+
+
+

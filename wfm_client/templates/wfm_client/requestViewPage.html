@@ -1,0 +1,295 @@
+{% load staticfiles %}
+{% load main_template_tags %}
+
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://getbootstrap.com/examples/dashboard/ -->
+<html lang="en">
+
+{% block header %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <title>WFM</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'client/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'client/css/dashboard.css' %}" rel="stylesheet">
+    <link href="{% static 'client/css/index.css' %}" rel="stylesheet">
+
+    <!-- Special Fonts -->
+    <link rel="stylesheet" href="{% static 'client/css/paymentfont.min.css' %}">
+    <link rel="stylesheet" href="{% static 'client/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'client/css/font-awesome.css' %}">
+    <link href="{% static 'client/css/awesomplete.css' %}" rel="stylesheet">
+
+
+
+    <!-- Font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="{% static 'client/js/ie-emulation-modes-warning.js' %}"></script>
+ 
+    <script src="{% static 'client/js/awesomplete.js' %}"></script>
+    <script src="{% static 'client/js/awesomplete.min.js' %}"></script>
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .table-striped>tbody>tr:nth-child(odd)>td{
+            background-color: #e6ffff;
+        }
+        .table-striped>tbody>tr:nth-child(even)>td{
+            background-color: #ffffe6;
+        }
+    </style>
+
+</head>
+
+{% endblock %}
+
+{% with user=request.user %}
+
+<body class="index reg two" id="index">
+    <div class="overlay"></div>
+
+    <!--Index -->
+    <div class="container-fluid user">
+        <div class="row">
+            <div class="floater_top"></div>
+            <div class="center">
+                <div class="container">
+                    <div class="row-fluid">
+                        <div class="floater_left"></div>
+                        <div class="center_inner">
+                            {% block sticky_image %}
+                            <header style="background: url('{% static 'client/img/gal15.png' %}') no-repeat;">
+                                <div class="img">
+                                    <a href="/" style="float:right; color: #4e0519;"><h4>Home</h4></a>                                 
+
+                                </div>
+                            </header>
+                            {% endblock %}
+                            <!-- Page Inner -->
+                            <div class="page_inner">
+
+                                <!--ID "sticky_top" for sticky -->
+                                <div class="col-md-12 content two" id="sticky_top">
+                                    <div class="col-md-12 ad">
+                                        <div class="col-md-6">
+                                            <!-- Profile -->
+                                            <div class="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="label">{{user|get_requestOrderItems}}</span>
+                                                <div class="imgg"> <img src="{% static 'client/img/gal10.jpg' %}" />
+                                                </div>
+                                            </div>
+                                            <!-- Profile -->
+                                            <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                                <li class="active">
+                                                    <a href="{% url 'client:request_order_list_view' %}">Your Request(s)</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{% url 'client:client_page' %}#od">Place a Request</a>
+                                                </li>                                                
+                                                <li class="logout">
+                                                    <a href="{% url 'general:user_logout' %}">Log Out</a>
+                                                </li>
+                                            </ul>
+                                            <div class="col-md-7">
+                                                <p>{{user.username}}</p>
+                                                <p><span>{{user.email}}</span></p>
+                                            </div>
+                                        </div>
+                                                                                
+                                         {% block place_order %}
+                                                  
+                                         {% endblock %}
+
+                                                </div>
+                                            </div>  
+                                        <!-- Page In -->
+                                        <div class="page_in">                                
+                                            {% block view_orders %}
+                                            <!-- No Items -->
+                                                <div class="content_outer three list">
+                                                    <div class="col-md-12 content" style="padding-bottom:30px;">
+                                                        <div class="col-md-12" style="text-align:left;">
+                                                            <h2>Your Requests</h2>
+                                                            <p></p>
+                                                        </div>
+                                            <!-- Item -->
+                                
+                                                {% for key, value in grouped_order_list.items %}
+                                                    <div class="col-md-12 list_item ">
+                                                        <div class="col-md-12 list_top">
+                                                            <div class="col-md-8">
+                                                                <!-- <span class="label {{order_in.order_status}}"></span> -->
+                                                              <p>
+                                                                {{value.order.created_on_by}} 
+                                                              </p>
+                                                                {% if value.order.status == "approved" %}
+                                                                   <h1 style="color:blue;">Order: #{{ key }} - {{ value.order.status|title }}</h1>
+                                                                {% elif value.order.status == "processing" %}
+                                                                    <h1 style="color:brown;">Order: #{{ key }} - {{ value.order.status|title }}</h1>
+                                                                {% elif value.order.status == "new" %}
+                                                                    <h1 style="color:green;">Order: #{{ key }} - {{ value.order.status|title }}</h1>
+                                                                {% endif %}
+                                                            </div>
+                                                            <span class="down">
+                                                                <i class="fa fa-angle-down"></i>
+                                                            </span>
+                                                        </div>
+                                                            <!-- Inner -->
+                                                            <div class="list_inner col-md-12">
+                                                                <div class="col-md-12">
+                                                                    <!-- <div class="alert alert-danger" role="alert">
+                                                                        Warning issue message in regards to the order. Message from the Assigned Authograph Authenticator.
+                                                                    </div> -->
+                                                                    
+                                                        <div class="col-md-6" style="padding-left:7.5px;"></div>
+                                                    </div>
+                                                                <div class="col-md-12">
+                                                                    <h1>Items in your order</h1>
+                                                                    <table width="100%" border="0" id="preview_order_items" class="table table-striped">
+                                                                        <tr>
+                                                                            <th>SN</th>
+                                                                            <th>Name</th>
+                                                                            <th>Category</th>        
+                                                                            <th>Quantity</th>
+                                                                            <th>Status</th>       
+                                                                        </tr> 
+                                                                {% for order in value.order_list %}
+                                                                    {% for item in order.requestitem_set.all %}
+                                                                        <tr>                                                    
+                                                                            <td>{{ forloop.counter }}</td>
+                                                                            <!-- <td>{{ item.make }}</td> -->
+                                                                            <td>{{ item.name}}</td>
+                                                                            <td>{{ item.category }}</td>
+                                                                            <td>{{ item.quantity }}</td>
+                                                                            {% if item.status == "Pending" %}
+                                                                                <td style="color:brown">{{ item.status }}</td>
+                                                                            {% elif item.status == "approved" %}
+                                                                                <td style="color:blue">
+                                                                                 {{item.status}}</td>   
+                                                                            {% endif %}                                                 
+                                                                                                                              
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                {% endfor %}
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                                <!-- Inner -->
+                                                    </div>
+                                                {% empty %}
+                                
+                                                <!-- No drder -->
+                                                <div class="content_outer three no_item">
+                                                    <div class="col-md-12 content">
+                                                        <p>You have <strong>no orders</strong> currently in your cart!
+                                                            <br/><strong>Place an order now!</strong></p>
+                                                    </div>
+                                                </div>
+                                                <!-- No order -->
+                                            {% endfor %}
+                                                <!-- Footer -->
+                                                {% endblock %}
+
+
+                                                {% block footer %}
+                                                <footer>
+                                                    <div class="col-md-12 content">
+                                                        <a href="#" class="rinfo hide">
+                                                            <span>
+                                                            <i class="fa fa-question"></i>
+                                                        </span>
+                                                            <p>Do you have any issues with the service?
+                                                                <br/>
+                                                                <strong>Contact our support team now!</strong>
+                                                            </p>
+                                                        </a>
+                                                        <!-- Social Links -->
+                                                        <ul class="social">
+                                                        <li>
+                                                            <a href="">
+                                                                <i class="fa fa-facebook"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class='hide'>
+                                                                <i class="fa fa-twitter"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class='hide'>
+                                                                <i class="fa fa-linkedin"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <!-- Social Links -->
+                                                </div>
+                                            </footer>
+                                            {% endblock %}
+                                            <!-- Footer -->
+                                        </div>
+                                        <!-- Page In -->
+                                    </div>
+                                    <!-- Page Inner -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="floater_bottom"></div>
+            </div>
+        </div>
+
+    {% block modal_forms %}
+       
+    {% endblock %}     
+
+    {% endwith %}
+
+    {% block specific_scripts %}
+    {% endblock %} 
+
+    {% block scripts %}
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'client/js/jquery.min.js' %}"></script>
+    <script src="{% static 'client/js/bootstrap.min.js' %}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'client/js/ie10-viewport-bug-workaround.js' %}"></script>
+    <!-- Script for jquery animations -->
+    <script src="{% static 'client/js/script.js' %}"></script>
+    <!-- Script for sticky -->
+    <script src="{% static 'client/js/jquery.sticky.js' %}"></script>
+
+    {% endblock %}
+
+    {% block custom_scripts %}
+
+        {% include 'wfm_general_snippet/customScripts.html' %}
+
+    {% endblock %}    
+
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+{% load humanize %}
+
+{% for history in history_obj %}
+	{{history.message}}<br/>
+{% endfor %}
+
+{% if inventory_req %}
+
+		Created on - {{item_in_view.item_created_on}} by {{item_in_view.user.get_full_name}} | Name:{{item_in_view.item_name|title}} | Category:{{item_in_view.item_category|title}} | S/No:{{item_in_view.item_num}}
+
+{% elif item_req %}
+
+		Created on - {{item_in_view.created_on}} by {{item_in_view.user.get_full_name}} | Name:{{item_in_view.name|title}} | Category:{{item_in_view.category|title}} | S/No:{{item_in_view.number}}
+
+{% else %}
+
+		Created on - {{item_in_view.created_on_by}} by {{item_in_view.requestee.get_full_name|title}} | Order No:{{item_in_view.ordernumber}}
+
+{% endif%}

@@ -1,0 +1,189 @@
+{% extends 'wfm_admin/adminPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+
+{% block page_header %}  
+	<h2 class="page-header"> Create Supply Order </h2>
+{% endblock page_header %}
+
+{% block select_all_orders %}
+{% endblock select_all_orders %}
+
+{% block search_action_panel %}
+{% endblock %}
+
+{% block order_details %}
+{% if items_below_threshold %}
+
+<div class="container">
+  <br>
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+	    
+	    <div class="carousel-inner" role="listbox">
+
+		    <div class="item active">
+			  <h5 style="position:relative; left:13px; color:red; bottom:10px;">You have items that are below required stock...</h5>
+		    </div>
+
+		    <div class="item">
+			<h5 style="position:relative; left:13px; color:red; bottom:10px;">To create a supply order of desired items...
+			  </h5>
+		    </div>
+
+		    <div class="item">
+			  <h5 style="position:relative; left:13px; color:red; bottom:10px;">Navigate through list of items...</h5>
+		    </div>
+
+		    <div class="item">
+			  <h5 style="position:relative; left:13px; color:red; bottom:10px;">Enter desired quantity in the box "Qty" for any item of your choice...</h5>
+		    </div>
+		    
+		    <div class="item">
+			  <h5 style="position:relative; left:13px; color:red; bottom:10px;">Check the box to the left of the item...</h5>
+		    </div>
+
+		    <div class="item">
+			  <h5 style="position:relative; left:13px; color:red; bottom:10px;">Click on submit button...</h5>
+		    </div>
+
+	    </div>
+	</div>
+</div>
+
+<a href="#" id="add_new_items" class="pull-right" style="position:relative; bottom:10px;"> Add Another Item</a>
+
+<div>
+	<table width="70%" border="0" align="center" class="table table-striped custom_number" id="mysupplytable">
+		<tr>
+<!-- 		<th></th>-->
+ 			<th>S/No</th>
+			<th>Name</th>
+			<th>Category</th>        
+			<th>Required Stock</th>
+			<th>Avaliable Stock</th>
+			<th>Quantity Required</th>
+			<th>Actions</th>
+		</tr> 
+		{% for item in items_below_threshold %}
+			<tr>
+               <!-- <td><input name="supply_chkbox" class="supply_chkbox" value="{{item.pk}}" type='checkbox'/></td> -->				   <td>{{ item.item_num }}</td> 
+				<td>{{ item.item_name }}</td>
+				<td>{{ item.item_category }}</td>
+				<td>{{ item.threshold }}</td>
+				<td>{{ item.item_quantity }}</td>
+				<td><input name="supply_qty" type="text" placeholder="Qty"</td>
+				<td>
+					<i class="fa fa-thumbs-o-up">
+					<i class="fa fa-">
+				</td>
+			</tr>
+  		{% endfor %}
+
+	</table>
+
+</div>
+
+
+<div class="col-md-3 col-md-offset-9">
+	<button class="btn btn-primary pull-right myhover" style="position:relative; width:75%; right:51px;" 
+	id="create_supply">Submit</button>
+</div>
+
+{% else %}
+	<h5 style="color:red;">You do not have item(s) that are below required stock</h5>
+{% endif %} 
+
+<div class ="pagination">
+		<span>
+			{% if items_below_threshold.has_previous %}
+				  <a href="?page={{ items_below_threshold.previous_page_number }}">Previous</a>
+			  {% endif %}
+
+				 {% for page in items_below_threshold.paginator.page_range %}
+			  {% ifequal page items_below_threshold.number %}
+			    <span class="current"><b>{{ page }}</b></span>
+			  {% else %}
+			    <a href="?page={{ page }}"> {{ page }}</a>
+			  {% endifequal %} 
+			 {% endfor %}
+
+			 {% if items_below_threshold.has_next %}
+				  <a href="?page={{ items_below_threshold.next_page_number }}">Next</a>
+			{% endif %}
+		</span>
+	</div>
+</div>
+
+{% endblock order_details %}
+
+{% block modal %}
+
+<style>
+.modal-backdrop {
+  z-index: -1;
+  }
+</style>
+
+<div class="modal fade" id="addAnotherItemModal" role="dialog" style="overflow-y:scroll;">
+            <div class="modal-dialog">
+    
+            <!-- Modal content-->
+                <div class="modal-content" align="left">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Another Item </h4>
+                         <!-- <p>{{order_item.id}}</p> -->
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="alert hidden" id="alert1" role="alert">
+                    </div>
+                  
+                    <form action="" method="post" class="special" enctype="multipart/form-data" id="{{request_item.pk}}">
+                      {% csrf_token %}                            
+                               
+                              <div class="col-md-12">
+                                <label>Name</label>
+                                  <input type="text" id="id_item_name" maxlength="30" name="item_name" value="" required />
+                              </div>
+
+                              <div class="col-md-12">
+                                <label>Category</label>
+                                  <input type="text" id="id_item_category" maxlength="30" name="item_category" value="" readonly />
+                              </div> 
+
+                              <div class="col-md-12">
+                                <label>S/No</label>
+                                  <input type="text" id="id_item_num" maxlength="30" name="item_num" value="" readonly />
+                              </div> 
+
+	                          <div class="col-md-12">
+	                              <label>Required Stock</label>
+	                                <input type="text" id="id_item_num" maxlength="30" name="item_num" value="" readonly />
+	                           </div> 
+
+	                           <div class="col-md-12">
+	                              <label>Avaliable Stock</label>
+	                                <input type="text" id="id_item_num" maxlength="30" name="item_num" value="" readonly />
+                               </div>                           
+                           	
+                              <div class="col-md-12">
+                                <label>Required Quantity</label>
+                                  <input id="id_item_quantity" maxlength="3" name="item_quantity"  type="number"  value="" required/>
+                              </div>                        
+                         
+                           
+                              <input style="margin-left: 180px !important; margin-top: 20px !important;" type="submit" name="edit" id="edit_item" class='btn' value="Add"/>
+                            <!-- </div> -->
+                            
+                    </form><br>
+                    
+                    
+                  </div>
+                    </div>
+                </div>
+      
+            </div>
+        </div>
+
+{% endblock %}

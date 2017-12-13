@@ -1,0 +1,814 @@
+{% load staticfiles %}
+{% load main_template_tags %}
+
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://getbootstrap.com/examples/dashboard/ -->
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		
+    	<link rel="icon" href="http://getbootstrap.com/favicon.ico">
+		<!--<link rel="icon" href="{% static 'img/favicon.ico' %}">-->
+
+		<title> WFM - {% block title %} Dashboard {% endblock title %}</title>
+		<link href = "{% static 'client/css/bootstrap.min.css' %}" rel="stylesheet" type='text/css'>
+		<!-- Custom styles for this template -->
+		<link href= "{% static 'client/css/dashboard.css' %}" rel="stylesheet" type='text/css'>
+		<link href="{% static  'client/css/theme.css' %}" rel="stylesheet" type='text/css'>
+		<link href="{% static  'client/css/index.css' %}" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+		<link rel="stylesheet" href="{% static 'client/css/paymentfont.min.css' %}">
+
+		<!-- Font -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+		<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+		<script src="{% static 'client/js/ie-emulation-modes-warning.js' %}"></script>
+		<link rel="stylesheet" href="{% static 'client/css/custom_stylesheet.css' %}"/>
+
+		<!--Awesomplete-->
+		<script src="{% static 'client/js/awesomplete.js' %}"></script>
+    	<script src="{% static 'client/js/awesomplete.min.js' %}"></script>
+
+		<style type="text/css">
+
+		.btn-custom {
+			font-size:12px; 
+			font-weight: normal;
+			font-family: verdana;
+			border: thick solid #ffffff; 
+			/*border-radius: 3px; */
+			padding: 10px 20px 10px 20px; 
+			background-color:#7a0829; 
+			color:#ffffff;"
+		}
+
+		.btn-custom:hover {
+			font-size:12px; 
+			font-weight: normal;
+			font-family: verdana;
+			/*border:none; */
+			 border: thick solid #ffffff; 
+			/*border-radius: 3px; */
+			padding:  10px 20px 10px 20px; 
+			background-color:#5e061f; 
+			color:#ffffff;"
+		}
+		.text-error{
+			color: #bc1818;
+		}
+		/*.bg-error{
+			background-color: #bc1818;
+			opacity: 0.2;
+			color: #000000;
+		}*/
+		.custom_number input[type="text"]{
+			height: 30px;
+			width:40%;
+			margin-bottom: 0px;
+		}
+
+		.myhover:hover{
+			background: #337ab7;
+			border: thick solid #337ab7; 
+
+		}
+		
+		.table-striped>tbody>tr:nth-child(odd)>td{
+            background-color: #e6ffff;
+        }
+
+        .table-striped>tbody>tr:nth-child(even)>td{
+            background-color: #ffffe6;
+        }
+
+		</style>
+		
+	</head>
+
+<body>
+{% block body %} 
+	{% with user=request.user %}
+	{% csrf_token %}
+		<div class="container-fluid">
+			<div class="row">
+				<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div id="navbar" class="darkred">
+					<!-- <ul class="nav navbar-nav navbar-right" style='padding-right:15px;'>
+						<li class="dropdown" style="display:none;">
+							<span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="settings">
+							</span>
+							<ul class="dropdown-menu two" aria-labelledby="settings">
+								<li class="dropdown-header first">Settings</li>
+								<li><a href="#">Action</a>
+								</li>
+								<li><a href="#">Another action</a>
+								</li>
+								<li><a href="#">Something else here</a>
+								</li>
+								<li><a href="#">Another action</a>
+								</li>
+								<li class="dropdown-header">Settings</li>
+								<li><a href="#">Partner Profile</a>
+								</li>
+								<li><a href="#">Another action</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<span id="help">                            
+							</span>
+						</li>
+					</ul> -->
+					<!-- User -->
+					<div class="user">
+						<div class="img" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu1">
+							
+						<img {% if user.useraccount.passport %} src="" {% else %} src="" {% endif %} alt="image"/>
+						   
+						</div>
+						<ul class="dropdown-menu two" aria-labelledby="dropdownMenu1" style="z-index:100; ">
+							<li class="dropdown-header">Account</li>
+							<!--<li><a href="#">Updates <span class="badge red">7</span></a>
+							</li>
+							<li><a href="#">Messages <span class="badge">3</span></a>
+							</li>
+							<li><a href="#">Tasks <span class="badge">5</span></a>
+							</li>
+							<li class="dropdown-header">Settings</li>
+							<li><a href="#" class="btn_show" rel="i9">Partner Profile</a>
+							</li>
+							<li><a href="#">Separated link</a>
+							</li>-->
+							<li>
+								<a href="{% url 'general:user_logout' %}" class="btn">Log Out</a>
+							</li>
+						</ul>
+						<h2>Welcome {{ user.username }} </h2>
+						<!-- <span class="badge top"></span> -->
+					</div>
+					<!-- User -->
+					<!-- Hamburger Style Menu -->
+					<div class="menu">
+						<div class="hamburger open">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+					</div>
+					<!-- Hamburger Style Menu -->
+					<!-- Searchbar -->
+					<!-- <form class="navbar-form navbar-left search_outer">
+						<input type="text" class="form-control" placeholder="Search...">
+					</form> -->
+					<!-- Searchbar -->
+				</div>
+			</div>
+		</nav> 
+<!-- 
+ top:100%; display:none; min-width:160px; padding:5px 0px; margin:2px 0px 0px; font-sixe:14px;
+							text-align:left; list-style:none; float:none; background-color:none; border:none; border-radius:none; -->
+	<!--  Left navigation panel -->
+			<div class="sidebar darkred">
+			<a href="">
+			<span class="navbar-brand"></span></a>
+			<div class="nav-outer">
+				{% if user.is_staff %}
+					<ul class="nav nav-sidebar">
+						<li class="dropdown"><a href="{% url 'dashboard:admindashboard' %}">All Orders</a></li>
+					</ul>
+				{% endif %}
+
+				{% block selectors %}
+
+				{% if user.is_staff %}
+					<ul class="nav nav-sidebar">
+						<!--<li class="dropdown active"><a href="#" rel="i1">Basic Cert</a>-->
+						<div class="dropdown">
+
+					  		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="position:relative; left:-55px; background:none; border:none; cursor:pointer;">Categories
+<!-- 					  			<span class="glyphicon glyphicon-triangle-bottom" style="left:100px;"></span>-->
+ 									<i class="fa fa-arrow-down" style="left:100px; position:relative;" aria-hidden="true"></i>
+
+							</button>
+
+							<ul class="dropdown-menu" style="position:relative; left:0px; float:none; border:none !important; box-shadow:none; background:none; margin-top:-10px;">
+								<li>
+									<a href="{% url 'dashboard:order_type' 'new' %}" style="padding:10px 20px;">New Orders <span class="badge" style="position:relative; left:96px; padding:4px 6px; background-color:grey;">{% get_order_type_count 'new' %}</span></a>
+								</li>
+								<li>
+									<a href="{% url 'dashboard:order_type' 'approved' %}" style="padding:10px 20px;">Approved Orders<span class="badge" style="position:relative; left:65px; padding:4px 6px; background-color:grey;">{% get_order_type_count 'approved' %}</span></a>
+								</li>
+								<li>
+									<a href="{% url 'dashboard:order_type' 'processing' %}" style="padding:10px 20px;">Processing Orders<span class="badge" style="position:relative; left:59px; padding:4px 6px; background-color:grey;">{% get_order_type_count 'processing' %}</span></a>	
+								</li>
+								<li>
+									<a href="{% url 'dashboard:order_type' 'declined' %}" style="padding:10px 20px;">Declined Orders<span class="badge" style="position:relative; left:73px; padding:4px 6px; background-color:grey;">{% get_order_type_count 'declined' %}</span></a>
+								</li>
+							</ul>
+						   <!--  <ul>
+							</ul> -->
+						</div>
+					</ul>
+
+					<ul class="nav nav-sidebar">
+						<div class="dropdown">
+					      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="position:relative; left:-55px; background:none; border:none; cursor:pointer;">Inventory
+							<i class="fa fa-arrow-down" style="left:102px; position:relative;" aria-hidden="true"></i>
+						</button>
+							<ul class="dropdown-menu" style="position:relative; left:0px; float:none; border:none !important; box-shadow:none; background:none; margin-top:-10px;">
+								<li>
+									<a href="{% url 'dashboard:inventory' %}" style="padding:10px 20px;">Stock</a>
+								</li>
+								<!-- <li>
+									<a href="{% url 'dashboard:inventory' %}" style="padding:10px 20px;">Create Item</a>
+								</li> -->
+							</ul>
+						</div>
+					</ul>
+
+
+				<ul class="nav nav-sidebar">
+					<div class="dropdown">
+					<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="position:relative; left:-42px; background:none; border:none; cursor:pointer;">User Manager
+						<i class="fa fa-arrow-down" style="left:77px; position:relative;" aria-hidden="true"></i>
+					</button>
+						<ul class="dropdown-menu" style="position:relative; left:0px; float:none; border:none !important; box-shadow:none; background:none; margin-top:-10px;">
+							<li>
+								<a href="{% url 'dashboard:usermanager' %}" style="padding:10px 20px;">User Manager</a>
+							</li> 
+						</ul>
+					</div>
+				</ul>
+
+
+				<ul class="nav nav-sidebar">
+					<div class="dropdown">
+					    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="position:relative; left:-37px; background:none; border:none; cursor:pointer;">Supply Manager
+							<i class="fa fa-arrow-down" style="left:65px; position:relative;" aria-hidden="true"></i>
+						</button>
+						<ul class="dropdown-menu" style="position:relative; left:0px; float:none; border:none !important; box-shadow:none; background:none; margin-top:-10px;">
+							<li>
+								<a href="{% url 'dashboard:create_supply' %}" style="padding:10px 20px;">Create Supply Order</a>
+							</li>
+							<li>
+								<a href="" style="padding:10px 20px;">Confirm Supply</a>
+							</li>
+						</ul>
+					</div>
+				</ul>
+
+
+				<ul class="nav nav-sidebar">
+					<li><a href="{% url 'analytics:departmentalanalysis' %}">Comparative Analysis</a>
+					</li>
+				</ul>
+
+
+			{% else %}
+				<ul class="nav nav-sidebar">
+						<!--<li class="dropdown active"><a href="#" rel="i1">Basic Cert</a>-->
+						<div class="dropdown">
+
+					  		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="position:relative; left:-55px; background:none; border:none; cursor:pointer;">Categories
+<!-- 					  			<span class="glyphicon glyphicon-triangle-bottom" style="left:105px;"></span>
+ -->							</button>
+
+							<ul class="dropdown-menu" style="position:relative; left:0px; float:none; border:none !important; box-shadow:none; background:none; margin-top:-10px;">
+								<li>
+									<a href="{% url 'dashboard:order_type' 'new' %}" style="padding:10px 20px;">New Orders <span class="badge" style="position:relative; left:96px; padding:4px 6px; background-color:grey;">{% get_order_type_count 'new' %}</span></a>
+								</li>
+								<li>
+									<a href="{% url 'dashboard:order_type' 'approved' %}" style="padding:10px 20px;">Approved Orders<span class="badge" style="position:relative; left:65px; padding:4px 6px; background-color:grey;">{% get_order_type_count 'approved' %}</span></a>
+								</li>
+								<li>
+									<a href="{% url 'dashboard:order_type' 'processing' %}" style="padding:10px 20px;">Processing Orders<span class="badge" style="position:relative; left:59px; padding:4px 6px; background-color:grey;">{% get_order_type_count 'processing' %}</span></a>	
+								</li>
+								<li>
+									<a href="{% url 'dashboard:order_type' 'declined' %}" style="padding:10px 20px;">Declined Orders<span class="badge" style="position:relative; left:73px; padding:4px 6px; background-color:grey;">{% get_order_type_count 'declined' %}</span></a>
+								</li>
+							</ul>
+						   <!--  <ul>
+							</ul> -->
+						</div>
+					</ul>
+
+				<!-- <ul class="nav nav-sidebar">
+					<li class="dropdown"><a href="#" rel="i1">LOA</a>
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul>
+							<li>
+								<a href="">New</a>
+							</li>
+							<li>
+								<a href="">Processing</a>
+							</li>
+							<li>
+								<a href="">Approved (LOA)</a>
+							</li>
+							<li>
+								<a href="">Club House</a>
+							</li>
+							<li>
+								<a href="">Arbitrate (LOI)</a>
+							</li>
+							<li>
+								<a href="">Rejected (LOO)</a>
+							</li>
+							<li>
+								<a href="">LOO (inconclusive)</a>
+							</li> 
+						</ul>
+					</li>
+				</ul> -->
+				<!-- <ul class="nav nav-sidebar">          
+					<li><a href="" rel="i5">Payment Records</a>
+					</li>
+				</ul>
+				<ul class="nav nav-sidebar">          
+					<li><a href="" rel="i5">Analytics</a>
+					</li>
+				</ul>
+				<ul class="nav nav-sidebar">
+					<li class="dropdown"><a href="#" rel="i1">Events</a>
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul>
+							<li><a href="" rel="i5">Add Event</a>
+							</li>
+							<li><a href="">View Events</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				
+				<ul class="nav nav-sidebar">
+					<li class="dropdown"><a href="#" rel="i1">Dealers</a>
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul>
+							<li><a href="" rel="i5">Add Dealer</a>
+							</li>
+							<li><a href="">View Dealers</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				
+				<ul class="nav nav-sidebar">
+					<li class="dropdown"><a href="#" rel="i1">Signer</a>
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul>
+							<li><a href="" rel="i5">Add Signer</a>
+							</li>							
+							<li><a href="">View Signers</a>
+							</li>
+							<li><a href="">View Groups</a>
+							</li>
+						</ul>
+					</li>
+				</ul> -->
+
+			{% endif %}
+
+
+
+
+				{% if user.is_superuser %}
+
+				<!-- <ul class="nav nav-sidebar">
+					<li class="dropdown"><a>User Manager</a>
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul>
+							<li><a href="" rel="i5">Manage Users</a>
+							</li>
+
+							<li><a href="" rel="i5">Manage User Permissions</a>
+							</li>
+						</ul>
+					</li>
+				</ul> -->
+				
+				 <!-- <ul class="nav nav-sidebar">
+					<li class="dropdown"><a href="#">LOA Settings</a>
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul>
+							<li>
+								<a href="">Categories</a>
+							</li>
+							<li>
+								<a href="">Autographs</a>
+							</li>
+							<li>
+								<a href="">Authentication Remarks</a>
+							</li>
+							<li>
+								<a href="">Other Entries</a>
+							</li>
+						</ul>
+					</li>
+				</ul> -->				 
+				 
+			  {% endif %}
+			  {% endblock %}
+			</div>
+			<!-- <div class="bottom">
+				<a href="url 'general:user_logout' " class="btn">Log Out</a>
+			</div> -->
+		</div>	
+	<!-- End left navigation panel -->
+
+
+<div class="main_outer">
+
+	{% block body_content %}
+
+		<div class="main">
+			<div class="tab_inner"> 
+				{% for msg in messages %}
+					<script>
+						function show_alert(){
+						var alert = '<p style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</p>';
+						document.write(alert);
+						}
+						display = window.setTimeout(show_alert(), 1000);
+						window.clearTimeout(display);
+					</script>
+					
+				{% endfor %}                   	
+				<!-- Inner Tab #1 -->
+				<div class="inner" id="i1">
+					<div class="row-fluid">
+						<div class="col-md-12  pageh" style="position:relative;">
+							<h1 class="page-header"> Basic Cert <span>/ Order</span></h1>
+						</div>
+					</div>
+				<!--  Search panel first -->
+				   <div class="row-fluid">
+						<div class="col-md-12">
+							<div class="col-md-12 long">
+								<form action="" method='get'>
+								<div class="col-md-8">
+									<input type='text' class="full" name="order" placeholder="Search Order Number, Email, Firstname, Lastname"/>
+									<div class="col-md-12">
+										<div class="col-md-4 sub">
+											<div class="select_outer">
+												<i class="fa fa-calendar"></i>
+												<input type="text" class="datepicker-8" name="first_date" style="text-align: center">
+											</div>
+										</div>
+										<div class="col-md-4 sub">
+											<div class="select_outer">
+												<i class="fa fa-calendar"></i>
+												<input type="text" class="datepicker-9" name="second_date" style="text-align: center">
+											</div>
+										</div>
+										<div class="col-md-4 sub">
+											<input type='submit' class="btn full myhover" value="Search">
+										</div>
+									</div>
+								</div>
+								</form>
+								<!--<form method="POST">
+									<div class="col-md-4" style="background:rgb(241,241,241);">
+										<div class="col-md-6 sub">
+											<div class="select_outer two">
+												<select id="mounth" class="cus_select">
+													<option value="hide">Select Option</option>
+													<option value="1">Option 1</option>
+													<option value="2">Option 2</option>
+													<option value="3">Option 3</option>
+													<option value="4">Option 4</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6 sub">
+											<div class="select_outer two">
+												<select id="mounth" class="cus_select">
+													<option value="hide">Select Action</option>
+													<option value="approve">Approve selected items</option>
+													<option value="n4">Move to N4</option>
+													<option value="3">Option 3</option>
+													<option value="4">Option 4</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="col-md-12">
+											<div class="select_outer two">
+												<select id="mounth" class="cus_select">
+													<option value="hide">Select Action</option>
+													<option value="approve">Approve selected items</option>
+													<option value="n4">Move to N4</option>
+													<option value="3">Select Options 3</option>
+												</select>
+											</div>
+										</div>
+										<a href="" class="btn">Go </a>
+									</div>
+								</form>-->
+
+							</div>
+						</div>
+				   </div> 
+				<!--  first search panel ends  -->  
+				<!-- Main Content -->
+				</div>
+				<!-- Inner Tab #1 -->
+
+					<!-- Inner Tab #2 -->
+						<div class="inner active" id="i2">
+							<div class="row-fluid">
+								<div class="col-md-12  pageh" style="position:relative;">
+									{% block page_header %}
+										<!-- page header here -->
+										<h2 id="all_order_status">All Orders</h2>
+									{% endblock page_header %}
+								</div>
+							</div>
+							
+							{% block search_action_panel %}
+							<div class="row-fluid">
+								<div class="col-md-12">
+									<div class="col-md-12 long" style="background:rgb(241,241,241);" >
+										{% block search_panel %}
+<!-- 																<form action="" method='get'>
+-->								<div class="col-md-8">
+									{% block input_field %}
+									<div class="col-md-12">	
+								      	<div class="col-md-11">
+										<input type='text' id="user_search_value" class="full" name="order" placeholder="Search Order Number, Email, Firstname, Lastname"/>
+								        </div>
+								        <div class="col-md-1">	
+								        	<i class="fa fa-search fa-3x" style="position:relative;right: 10px; color:#05BA8E; cursor:pointer;" id="submitSearch">
+								        	</i>
+								        </div>
+						     		</div>
+									{% endblock %}
+										<!-- <input type='text' class="full" /> -->
+									<div class="col-md-12" style="position:relative; bottom:36px; left:16px;">
+
+							        <div class="col-md-5 sub">
+							          <label>From:</label>
+							          <input type="date" id="begin_date" placeholder="Date" style="color:black; position:relative; top:6px; left:5px; width:145px; padding-left:5px; height:35px; border-radius:8px;" data-date="" data-date-format="DD MMMM YYYY">
+							        </div>
+
+							        <div class="col-md-5 sub" style="position:relative; left:-20px;">
+							          <label>To:</label>
+							          <input type="date" id="end_date" placeholder="Date" style="color:black; position:relative; top:4px; left:5px; width:145px; padding-left:5px; height:35px; border-radius:8px;" data-date="" data-date-format="DD MMMM YYYY">
+							        </div>
+
+							        {% block search_input %}
+									{% endblock %}
+									</div>
+								</div>
+							{% endblock %}
+
+								{% block action_panel %}
+								<div class="col-md-4" style="background:rgb(241,241,241);">
+									<!--<div class="col-md-6 sub">
+										<div class="select_outer two" style="z-index: 3;">
+											<select id="mounth" class="cus_select">
+												<option value="hide">Select Option</option>
+												<option value="1">Option 1</option>
+												<option value="2">Option 2</option>
+												<option value="3">Option 3</option>
+												<option value="4">Option 4</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6 sub">
+										<div class="select_outer two" style="z-index: 3;">
+											<select id="mounth" class="cus_select">
+												<option value="hide">Select Option</option>
+												<option value="1">Option 1</option>
+												<option value="2">Option 2</option>
+												<option value="3">Option 3</option>
+												<option value="4">Option 4</option>
+											</select>
+										</div>
+									</div>-->
+								{% block action_dropdown %}
+									<!-- <div class="col-md-9" style="padding: 5px; padding-left: 0px; margin:0px;">
+										<div class="select_outer two">
+											<select id="bulk_action_select" class="cus_select">
+												<option value="hide">Select Action</option>
+												<option value="approve_selected_items">Approve</option>
+												<option value="delete_selected_items">Delete</option> 
+
+											</select>
+										</div>
+									</div>
+									{% endblock %}
+									<div class="col-md-3" style="padding:5px; margin:0px;">
+									<a class="btn btn-xs pull-right submit_orders_action" style="cursor:pointer !important;" id="submit_orders_action">Go</a> 
+									<br/><br/><br/>
+								</div> -->
+								{% endblock %}
+							</div>
+						</div>
+					</div>
+					{% endblock %}
+
+						{% block select_all_orders %}
+					<!-- 	<div class="row-fluid">
+							<div class="col-md-12" style="position:relative; left:-15px; margin-top:-30px;">	
+								<h4 style="position:relative; left:25px;"><input type="checkbox" style="position:relative; left:-8px;" id="select_all_orders">Select Multiple Orders</h4>
+						    </div>
+						</div> -->
+						{% endblock select_all_orders %}
+
+
+						{% block order_details %}
+							<!--  Item listing detail  -->
+
+									
+						    <div class="row-fluid" id="requested_orders">
+						        <div class="col-md-12  pageh" style="position:relative;">
+
+						        {% for order in all_orders %}
+						              <!--Item -->
+						              <div class="horder">
+						                  <div class="col-md-12 hitem">
+						                      <div class="col-md-8"><br/>
+						                          <h2>
+						                              <span><!-- <input type="checkbox" class="inf" name="ch" id="{{order.pk}}" 
+						                                item_id="{{order.status}}">&nbsp; --> 
+						                                #{{ order.ordernumber }}|{{ order.created_on_by|date }} | {{ order.requestee.get_full_name|title }}|{{order.requestee.email}}|{{order.requestee.useraccount.department}} {% if order.created_by_admin_on == "True" %} | Admin ID: {{ order.request.user.email }} {% endif %} </span>
+						                                {% if order.status == "new" %}
+						                                <span style="color:green">Order Status: {{order.status|title}}</span>
+						                                {% elif order.status == "approved" %}
+						                                <span style="color:blue">Order Status: {{order.status|title}}</span>
+						                                {% elif order.status == "declined" %}
+						                                <span style="color:red">Order Status: {{order.status|title}}</span>
+						                                {% elif order.status == "processing" %}
+						                                <span style="color:brown">Order Status: {{order.status|title}}</span>
+						                                {% endif %}
+						                          </h2>
+						                          <input class="hidden" id="order_item_number" value="{{order.pk}}"> 
+
+						                      </div>
+						                      <div class="col-md-2">
+						                    	<a href="{% url 'dashboard:items' order.pk %}" class="btn view_item myhover" style="cursor:pointer; width:200px !important;">View</a>   
+						                      </div>
+						                      <div class="col-md-2">
+						                        {% if order.status == "approved" %}
+						                            <a href='JavaScript:newPopup("{% url 'dashboard:print-order' order.pk %}")' title = "Print Request Order" target="_balnk"><i class="fa fa-print" aria-hidden="true"></i></a>
+						                             <a href='{% url "dashboard:history" order.pk 'order' %}' class="trigger_edit icon_space" title="History" item_id="{{item.pk}}"> <i class="fa fa-eye"></i> </a>
+						                        {% else %}
+						                        	{% if order.status == "new" %}
+						                            <a href="{% url 'dashboard:delete_order' order.pk %}" style="cursor:pointer;" class="delete_item" onclick="return confirm('Are you sure you want to delete?')" title = "Delete this order" ><i class="fa fa-trash-o" ></i></a>
+						                            {% endif %}
+						                           <a href='{% url "dashboard:history" order.pk 'order' %}' class="trigger_edit icon_space" title="History" item_id="{{item.pk}}"> <i class="fa fa-eye"></i> </a>
+						                        {% endif %}
+						                      </div>
+						                  </div>
+						              </div>
+						        {% empty %}
+						           <strong class="text-center">No order(s) in this category </strong> 
+						      {% endfor %}
+
+						  </div>
+						</div>
+
+															
+							<!--  Item listing ends  -->
+						{% endblock order_details %}
+
+						<div class="hidden" id="search_order">
+							<form id="searchform" name="searchform" action="{% url 'dashboard:order_search' %}" method="POST">
+								{% csrf_token %}
+								<input type="text" name="startdate" id="startdate" value="">
+								<input type="text" name="enddate" id="enddate" value="">
+								<input type="text" name="request_order" id="request_order" value=""
+								<input type="submit" name="submit_search" id="submit_search" value="Submit">
+							</form>
+						</div>
+
+						<div class="hidden" id="search_for_item">
+							<form id="searchItemForm" name="searchItemForm" action="{% url 'dashboard:order_search' %}" method="POST">
+								{% csrf_token %}
+								<input type="text" name="requested_item" id="requested_item" value="">
+								<input type="submit" name="submit_search_item" id="submit_search_item" value="Submit">
+							</form>
+						</div>
+
+						<div class="hidden" id="action_for_order">
+			                <form id="actionForm" name="actionForm" action="{% url 'dashboard:update_orders' %}" method="POST">
+			                  {% csrf_token %}
+			                  <input type="text" name="order_update_type" id="order_update_type" value="">
+			                  <input type="text" name="orders_ids" id="orders_ids" value="">
+			                  <input type="text" name="orders_status" id="orders_status" value="">
+			                  <input type="submit" name="submit_for_update" id="submit_for_update" value="Submit">
+			                </form>
+			            </div>
+
+			            <div class="hidden" id="action_for_item">
+			                <form id="actionItemForm" name="actionItemForm" action="{% url 'dashboard:update_items' %}" method="POST">
+			                  {% csrf_token %}
+			                  <input type="text" name="items_update_type" id="items_update_type" value="">
+			                  <input type="text" name="order_id" id="order_id" value="">
+			                  <input type="text" name="items_ids" id="items_ids" value="">
+			                  <input type="text" name="items_qty" id="items_qty" value="">
+			                  <input type="text" name="items_num" id="items_num" value="">
+			                  <input type="text" name="items_status" id="items_status" value="">
+			                  <input type="submit" name="submit_for_item_update" id="submit_item_for_update" value="Submit">
+			                </form>
+			            </div>
+
+
+			            <div class="hidden" id="request_action_for_item">
+			                <form id="requestactionItemForm" name="requestactionItemForm" action="{% url 'dashboard:update_request_items' %}" method="POST">
+			                  {% csrf_token %}
+			                  <input type="text" name="order_num_id" id="order_num_id" value="">
+			                  <input type="text" name="item_id" id="item_id" value="">
+			                  <input type="text" name="item_qty" id="item_qty" value="">
+			                  <input type="text" name="item_num" id="item_num" value="">
+			                  <input type="text" name="item_status" id="item_status" value="">
+			                  <input type="submit" name="submit_for_item_update" id="submit_item_for_update" value="Submit">
+			                </form>
+			            </div>
+
+			            <div class="hidden">
+			                <form action="{% url 'dashboard:usermanager' %}" id="searchUserForm" name="     searchUserForm" method="POST">
+			                  {% csrf_token %}
+			                  <input type="text" name="search_value" id="search_value" value="">
+			                  <input type="submit" value="Submit">
+			                </form>
+			            </div>
+
+			            <div class="hidden">
+			                <form action="{% url 'dashboard:users_access' %}" id="UserAccessForm" name="UserAccessForm" method="POST">
+			                  {% csrf_token %}
+			                  <input type="text" name="users_access_ids" id="users_access_ids" value="">
+			                  <input type="text" name="users_access_status" id="users_access_status" value="">
+			                  <input type="submit" value="Submit">
+			                </form>
+			            </div>
+
+			            <div class="hidden">
+			                <form action="{% url 'dashboard:create_supply' %}" id="supplyForm" name="supplyForm" method="POST">
+			                  {% csrf_token %}
+			                  <input type="text" name="supply_items_ids" id="supply_items_ids" value="">
+			                  <input type="text" name="supply_items_qty" id="supply_items_qty" value="">
+			                  <input type="submit" value="Submit">
+			                </form>
+			            </div>
+
+					</div>
+				<!-- Inner Tab #2 -->
+			</div>
+		</div>
+				{% endblock body_content %}
+
+				<!-- Right side Sidebar -->
+				<div class="sidebar right">
+					<div class="sidebar_inner">
+
+						<div class="col-md-12 top">
+							<p>Make money. No limits. No hassle.</p>
+							<p>Build a share in the largest e-commerce logistics.</p>
+							<p>Platform in Africa by inviting friends and contacts.</p>
+							<a href="#" class="btn">Join now</a>
+						</div>
+						<div class="col-md-12">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at tellus vestibulum, semper massa vehicula, facilisis mauris. Morbi porta mauris vitae placerat egestas. Vestibulum urna erat, porttitor lacinia risus vel, tempor viverra tortor. Sed egestas ligula at mauris interdum, vel iaculis urna eleifend.</p>
+							<h2>Frequently Asked Questions</h2>
+							<p style="padding-bottom:10px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at tellus vestibulum, semper massa vehicula, facilisis mauris. Morbi porta mauris vitae placerat egestas.</p>
+
+						</div>
+						<div class="col-md-12" style="text-align:center; display:none;">
+							<p style="margin-bottom:0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at tellus vestibulum, semper massa vehicula, facilisis mauris. Morbi porta mauris vitae placerat egestas.</p>
+							<a href="#" class="btn" style="margin-bottom:15px;">Build Customers</a>
+						</div>
+						<span class="close"></span>
+
+					</div>
+				</div>
+				<!-- Right side Sidebar -->
+			</div>
+
+			{% endwith %}
+{% endblock body %}
+
+{% block modal %}
+{% endblock %}
+
+{% block footer %} 
+	{% include 'wfm_general_snippet/footer.html' %}
+{% endblock footer %}
+
+{% block script %}
+	{% include 'wfm_admin_snippet/scripts.html' %}
+{% endblock %}
+
+</body>
+</html>

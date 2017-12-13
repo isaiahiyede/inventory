@@ -1,0 +1,46 @@
+{% extends 'wfm_admin/adminPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+{% load chart_tags %}
+
+
+{% block page_header %}
+<h2 id="order_status">Analytics - Bar Chart</h2>
+{% endblock page_header %}
+
+{% block search_action_panel %}
+{% endblock %}
+
+
+{% block select_all_orders %}
+{% endblock select_all_orders %}
+
+{% block order_details %}
+
+{% if dept %}
+
+   <div class="col-md-12">  
+      {% chart %}
+         chxr=0,0,160
+         chxt=x,y
+         chxl=0:|{{depts|join:'|'}}
+         chbh=r,1
+         chs=700x400
+         cht=bvs
+         chdl={{labels|join:'|'}}
+         chco={{colors|join:'|'}}
+         chd=t:{{req_items|join:','}}
+         chtt=Bar+chart+for+Waifem|x-axis:+Cummulative+Orders+,+y-axis:+Departments+for+{{month}}
+      {% endchart %}
+   </div>
+
+{% else %}
+
+   <div class="col-md-12">
+      <h3 style="color:red">No match found</h3>
+   </div>
+
+{% endif %}
+
+{% endblock order_details %}
+

@@ -1,0 +1,258 @@
+{% extends 'wfm_admin/adminPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+
+{% block page_header %}
+<h2 id="order_status">User Manager</h2>
+{% endblock page_header %}
+		
+{% block search_action_panel %}
+  <div class="row-fluid">
+    <div class="col-md-12">
+      <div class="col-md-12 long" style="background:rgb(241,241,241);" >
+      {% block search_panel %}
+<!--                                <form action="" method='get'>
+-->   <div class="col-md-8">
+	      {% block input_field %}
+	      <div class="col-md-12"> 
+	      	<div class="col-md-11">
+	        	<input type='text' id="search_for_user_value" class="full" name="search_for_user_value" placeholder="Search Email, Firstname, Lastname"/>
+	        </div>
+	        <div class="col-md-1">	
+	        	<i class="fa fa-search fa-3x" style="position:relative;right: 10px; color:#05BA8E; cursor:pointer;"
+	        	id="submit_user_Search"></i>
+	        </div>
+	      </div>
+	      {% endblock %}
+        <!-- <input type='text' class="full" /> -->
+	      <div class="col-md-12">
+	        <div class="col-md-4 sub">
+	        </div>
+
+	        <div class="col-md-4 sub" style="position:relative; left:-20px;">
+	         </div>
+        {% block search_input %}
+        <div class="col-md-4 sub">
+<!--           <input style="position:relative; width:75%";
+          type='submit' id="submit_user_Search" class="full btn myhover" value="Search"> -->
+        <!-- <a href="#" class="btn full">Search</a> -->
+        </div>
+        {% endblock %}
+      </div>
+    </div>
+  {% endblock %}
+
+  {% block action_panel %}
+    <div class="col-md-4" style="background:rgb(241,241,241);">
+      <!--<div class="col-md-6 sub">
+        <div class="select_outer two" style="z-index: 3;">
+          <select id="mounth" class="cus_select">
+            <option value="hide">Select Option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6 sub">
+        <div class="select_outer two" style="z-index: 3;">
+          <select id="mounth" class="cus_select">
+            <option value="hide">Select Option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+          </select>
+        </div>
+      </div>-->
+    {% block action_dropdown %}
+		<div class="col-md-9" style="padding: 5px; padding-left: 0px; margin:0px;">
+			<div class="select_outer two">
+				<select id="user_action">
+					<option value="hide">Select Action</option>
+					<option value="make_staff">Staff</option>
+					<option value="undo_make_staff">Undo Staff</option>
+<!-- 					<option value=""></option>
+					<option value="regular">Regular</option> -->
+				</select>
+
+			</div>
+		</div>
+		{% endblock %}
+		<!--<a href="#" class="btn" id="action_dropdown_go">Go </a>-->
+		<div class="col-md-3" style="padding:5px; margin:0px;">
+			<a class="btn btn-xs pull-right myhover" id = "action_dropdown_go">Go</a> 
+			<br/><br/><br/>
+		</div>
+	</div>	
+  {% endblock %}
+
+{% endblock %}
+
+
+{% block order_details %}
+{% if user %}
+	<div class="row-fluid">
+		<div class="col-md-12">
+			<div class="tab_outer two">
+			
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active">
+						<a href="#tb1" aria-controls="profile" role="tab" data-toggle="tab">All</a>
+					</li>
+					<li role="presentation">
+						<a href="#tb2" aria-controls="home" role="tab" data-toggle="tab">Admin</a>
+					</li>
+					<li role="presentation">
+						<a href="#tb3" aria-controls="home" role="tab" data-toggle="tab">Regular</a>
+					</li>
+				</ul>
+
+				<!-- Tab panes -->
+				
+				<form id="user_list_form" action="" method="POST">
+					 {% csrf_token %}
+					<div class="tab-content two">
+
+						<div role="tabpanel" class="tab-pane active" id="tb1">
+							<table width="60%" border="0" class="table table-striped">
+								<tr>
+									<th></th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Email</th>
+									<th>Department</th>
+									<th>Registered On</th>
+
+								</tr>
+								{% if searched_user %}
+									{% for user in searched_user %}
+									<tr>
+										<td>
+											<input name="admin_id" class="admin_chkbx" value="{{user.pk}}" type='checkbox' user_id="{{user.pk}}"/>
+										</td>
+										<td>{{ user.first_name }}</td>
+										<td>{{ user.last_name }}</td>
+										<td>{{ user.email }}</td>
+										<td>{{ user.useraccount.department}}</td>
+										<td>{{ user.useraccount.created_on}}</td>
+									</tr>
+
+								    {% empty %}
+									  <strong class="text-center">No user found</strong> 
+								    {% endfor %}
+								{% else %}
+									{% for user in users %}
+									<tr>
+										<td>
+											<input name="admin_id" class="admin_chkbx" value="{{user.pk}}" type='checkbox' user_id="{{user.pk}}"/>
+										</td>
+										<td>{{ user.first_name }}</td>
+										<td>{{ user.last_name }}</td>
+										<td>{{ user.email }}</td>
+										<td>{{ user.useraccount.department}}</td>
+										<td>{{ user.useraccount.created_on}}</td>
+									</tr>
+
+								    {% empty %}
+									  <strong class="text-center">No user found</strong> 
+								    {% endfor %}
+								{% endif %}
+							</table>
+								
+						</div>
+
+						<div role="tabpanel" class="tab-pane" id="tb2">
+							<table width="60%" border="0" class="table table-striped">
+								<tr>
+									<th></th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Email</th>
+									<th>Department</th>
+									<th>Registered On</th>
+
+								</tr>
+		
+								{% for user in users %}
+									{% if user.is_staff %}
+
+									<tr>
+										<td>
+											<input name="admin_id" class="admin_chkbx" value="{{user.pk}}" type='checkbox' user_id="{{user.pk}}"/>
+										</td>
+										<td>{{ user.first_name }}</td>
+										<td>{{ user.last_name }}</td>
+										<td>{{ user.email }}</td>
+										<td>{{ user.useraccount.department}}</td>
+										<td>{{ user.useraccount.created_on}}</td>
+									</tr>
+
+									{% endif %}
+ 
+								{% endfor %}
+								
+							</table>
+								
+						</div>
+					
+						<!-- place history code here -->
+						<div role="tabpanel" class="tab-pane" id="tb3">
+							<table width="60%" border="0" class="table table-striped">
+								<tr>
+									<th></th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Email</th>
+									<th>Department</th>
+									<th>Registered On</th>
+								</tr>
+								
+								
+								{% for user in users %}
+								  {% if not user.is_staff %}
+
+									<tr>
+										<td>
+											<input name="user_id" class="client_chkbx" value="{{user.pk}}" type='checkbox' user_id="{{user.pk}}" />
+										</td>
+										<td>{{ user.first_name }}</td>
+										<td>{{ user.last_name }}</td>
+										<td>{{ user.email }}</td>
+										<td>{{ user.useraccount.department}}</td>
+										<td>{{ user.useraccount.created_on|date:'m-d-Y' }}</td>
+									</tr>
+
+									{% endif %}
+
+								{% endfor %}
+															
+							</table>
+						</div>
+						
+					</div>
+
+				</form>
+				
+				
+			</div>
+
+		</div>
+	</div>
+{% else %}
+	<div class="row-fluid">
+		<div class="col-md-12">
+			<div class="tab_outer two">
+				<div class="tab-content two">         
+					<div role="tabpanel" class="tab-pane active">
+						<strong class="text-center">No detail(s) in this category</strong>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% endblock order_details %}

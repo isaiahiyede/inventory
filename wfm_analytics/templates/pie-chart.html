@@ -1,0 +1,45 @@
+{% extends 'wfm_admin/adminPage.html' %}
+{% load staticfiles %}
+{% load main_template_tags %}
+{% load chart_tags %}
+
+
+
+{% block page_header %}
+<h2 id="order_status">Analytics - Pie Chart</h2>
+{% endblock page_header %}
+
+{% block search_action_panel %}
+{% endblock %}
+
+
+{% block select_all_orders %}
+{% endblock select_all_orders %}
+
+{% block order_details %}
+
+{% if dept %}
+
+	<div class="col-md-12">  
+	   {% chart %}
+	      cht=p
+	      chs=700x400
+	      chl={{depts|join:'|'}}
+	      chdl={{labels|join:'|'}}
+	      chco={{colors|join:'|'}}     
+	      chd=t:{{req_items|join:','}}
+	      chtt=Pie+chart+for+Waifem+for+{{month}}
+	   {% endchart %}
+	</div>
+
+{% else %}
+
+   <div class="col-md-12">
+      <h3 style="color:red">No match found</h3>
+   </div>
+
+{% endif %}
+
+
+{% endblock order_details %}
+
